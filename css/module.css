@@ -1,0 +1,235 @@
+table.frame {
+    width: auto;
+    padding: 0px;
+    border-collapse: collapse;
+    border: 2px solid black;
+    margin: 10px 2px;
+}
+
+table.frame td {
+    border: 1px solid black;
+    vertical-align: top;
+    padding: 0px;
+}
+
+table.line {
+    width: 100%;
+    padding: 0px;
+    border-collapse: collapse;
+    border: none;
+    margin: 0px;
+}
+
+table.line td {
+    border: 1px solid rgb(128, 128, 128);
+    vertical-align: top;
+    padding: 4px;
+}
+
+table.line td.z {
+    padding: 0px;
+}
+
+a.disabled {
+    pointer-events: none;
+    filter: grayscale(90%) opacity(.2);
+}
+
+.z table {
+    width: 100%;
+}
+
+table.line .c {
+    text-align: center;
+    vertical-align: middle;
+    padding: 4px;
+}
+
+table.line th {
+    border: 1px solid rgb(128, 128, 128);
+    background-color: #ececec;
+    padding: 4px;
+}
+
+table.no {
+    border: none;
+}
+
+table.no,
+table.no td,
+table.no th {
+    border-top: none;
+    border-bottom: none;
+}
+
+.my_label {
+    display: inline-block;
+    margin: 2px 12px 2px 2px;
+    padding: 4px;
+    line-height: 1em;
+    background-color: #e6e7ec;
+}
+
+.my_value {
+    display: inline-block;
+    margin: 2px 12px 2px 2px;
+    padding: 2px;
+    line-height: 1em;
+    color: blue;
+}
+
+.my_value2 {
+    display: inline-block;
+    margin: 2px;
+    padding: 2px;
+    line-height: 1em;
+    color: blue;
+}
+
+.my_unit {
+    display: inline-block;
+    margin: 2px 12px 2px -10px;
+    padding: 4px;
+    line-height: 1em;
+}
+
+.c1 {
+    width: 1.4em;
+}
+
+.vertical {
+    width: 1.1em;
+    word-break: break-all;
+    /* -webkit-writing-mode: vertical-lr; */
+    /* writing-mode: vertical-lr; */
+}
+
+td.c2,
+th.c2 {
+    width: 10em;
+    background-color: #f2f3fa;
+}
+
+td.c3,
+th.c3 {
+    width: 4em;
+    background-color: #f2f3fa;
+}
+
+.s {
+    width: 1em;
+}
+
+.sv {
+    width: 33%;
+}
+
+.bar {
+    margin: 30px auto;
+    position: relative;
+    z-index: 10;
+}
+
+.readonly {
+    background-color: transparent !important;
+    border: none;
+    display: inline-block;
+}
+
+/* If the screen size is 601px wide or more, set the font-size of <div> to 80px */
+/* @media screen and (min-width: 601px) {
+    .col-form-label {
+        font-size: 0.86vw;
+        font-weight: bold;
+    }
+} */
+
+/*======================================
+=            CUSTOM GUTTER CODE            =
+======================================*/
+
+@media(min-width:768px) {
+    /* Modify this based on column def */
+
+    .custom-gutter>[class*='col-'] {
+        padding-right: 4px;
+        padding-left: 4px;
+    }
+
+    .custom-gutter>[class*="col-"]:first-child {
+        padding-left: 15px;
+    }
+
+    .custom-gutter>[class*="col-"]:last-child {
+        padding-right: 15px;
+    }
+
+}
+
+.tooltip-inner {
+    font-size: 0.92em;
+    background-color: #830d48;
+    box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+}
+
+.tooltip.bs-tooltip-right .arrow:before {
+    border-right-color: #830d48 !important;
+}
+
+.tooltip.bs-tooltip-left .arrow:before {
+    border-left-color: #830d48 !important;
+}
+
+.tooltip.bs-tooltip-bottom .arrow:before {
+    border-bottom-color: #830d48 !important;
+}
+
+.tooltip.bs-tooltip-top .arrow:before {
+    border-top-color: #830d48 !important;
+}
+
+h1.club,
+h2.club,
+h3.club {
+    padding: 6px;
+    /* 離標題邊框距離 */
+    text-align: left;
+    /* 文字靠左 */
+    font-weight: normal;
+    /* 不要粗體 */
+    font-family: HanWangMingBlack, jf-openhuninn, 'Noto Sans TC', Mamelon;
+    /* 字型 */
+    background: -webkit-linear-gradient(rgb(3, 86, 163), rgb(0, 3, 3));
+    /* 漸層顏色 */
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.my-border {
+    padding: 12px 20px;
+    border: 0px solid black;
+    border-radius: 8px;
+    background: white;
+    box-shadow: 0px 0px 6px 1px rgba(37, 37, 37, 0.2);
+}
+
+.club_choice {
+    font-size: 1.5em;
+    border-radius: 8px;
+    background: white;
+    padding: 10px;
+    margin: 10px auto;
+    font-family: jf-openhuninn, Mamelon;
+}
+
+.choice_sort {
+    font-weight: bold;
+    color: rgb(136, 5, 70);
+    height: 1.8em;
+    width: 1.8em;
+    text-align: center;
+    vertical-align: middle;
+    background-color: rgb(240, 247, 246);
+    border-radius: 50%;
+    display: inline-block;
+}
