@@ -41,10 +41,10 @@ class Club_main
         $xoopsTpl->assign('choice1', $choice1);
 
         // 找出各社團被正取人數
-        $ok_num = Club_choice::get_ok_num($year, $seme);
-        $ok_sum = (int) array_sum($ok_num);
-        $xoopsTpl->assign('ok_num', $ok_num);
-        $xoopsTpl->assign('ok_sum', $ok_sum);
+        $clubs_ok_num = Club_choice::get_ok_num($year, $seme);
+        $clubs_ok_sum = (int) array_sum($clubs_ok_num);
+        $xoopsTpl->assign('clubs_ok_num', $clubs_ok_num);
+        $xoopsTpl->assign('clubs_ok_sum', $clubs_ok_sum);
 
         $xoopsTpl->assign('year', $year);
         $xoopsTpl->assign('seme', $seme);
@@ -55,8 +55,8 @@ class Club_main
         $xoopsTpl->assign('stu_count', $stu_count);
 
         // 尚未正取數
-        $not_ok_sum = $stu_count - $ok_sum;
-        $xoopsTpl->assign('not_ok_sum', $not_ok_sum);
+        $clubs_not_ok_sum = $stu_count - $clubs_ok_sum;
+        $xoopsTpl->assign('clubs_not_ok_sum', $clubs_not_ok_sum);
 
         // 找出已選填人數
         $chosen_stu = Club_choice::get_chosen_stu($year, $seme);
@@ -211,8 +211,8 @@ class Club_main
         $all = self::get($club_id);
 
         //找出目前當作第一志願的學生
-        $stu_arr = Club_choice::get_sort_stu($club_id, 1);
-        $xoopsTpl->assign('stu_arr', $stu_arr);
+        $choice1_stu_arr = Club_choice::get_sort_stu($club_id, 1);
+        $xoopsTpl->assign('choice1_stu_arr', $choice1_stu_arr);
 
         // 已正取學生
         $ok_stu = Club_choice::choice_result_ok($club_id);
@@ -356,28 +356,17 @@ class Club_main
         return $data_arr;
     }
 
-    //新增club_main計數器
-    public static function add_counter($club_id = '')
+    //取得某學年度的社團id
+    public static function get_clubs($year, $seme)
     {
         global $xoopsDB;
-
-        if (empty($club_id)) {
-            return;
-        }
-
-        $sql = "update `" . $xoopsDB->prefix("club_main") . "` set `` = `` + 1
-        where `club_id` = '{$club_id}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-    }
-
-    //自動取得club_main的最新排序
-    public static function max_sort()
-    {
-        global $xoopsDB;
-        $sql = "select max(``) from `" . $xoopsDB->prefix("club_main") . "`";
+        $club_arr = [];
+        $sql = "select club_id from `" . $xoopsDB->prefix("club_main") . "` where club_year='$year' and club_seme='$seme' order by rand()";
+        $club_arr = [];
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        list($sort) = $xoopsDB->fetchRow($result);
-        return ++$sort;
+        while (list($club_id) = $xoopsDB->fetchRow($result)) {
+            $club_arr[$club_id] = $club_id;
+        }
+        return $club_arr;
     }
-
 }

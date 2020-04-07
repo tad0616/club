@@ -89,13 +89,13 @@ switch ($op) {
         if ($stu_id) {
             header("location: index.php?stu_id=$stu_id");
         } else {
-            header("location: index.php?op=not_chosen_yet&year=$year&seme=$seme");
+            header("location: index.php");
         }
         exit;
 
     case "choice_result_ok":
         Club_choice::set_choice_result($apply_id, $club_id, '正取');
-        header("location: index.php?club_id=$club_id");
+        header("location: index.php?club_id={$club_id}#clubTab2");
         exit;
 
     case "choice_result_all_random":
@@ -114,12 +114,12 @@ switch ($op) {
 
     //預設動作
     default:
+        $stu_edit_able = Tools::stu_edit_able();
         if ($_SESSION['stu_id']) {
             if (!empty($club_id)) {
                 Club_main::show($club_id);
                 $op = 'club_main_show';
             } else {
-                $stu_edit_able = Tools::stu_edit_able();
                 Club_choice::index($year, $seme);
                 $op = 'club_choice_index';
             }

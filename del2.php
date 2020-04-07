@@ -1,22 +1,23 @@
 <?php
 use XoopsModules\Club\Club_apply;
 use XoopsModules\Club\Club_choice;
+use XoopsModules\Club\Club_main;
 use XoopsModules\Club\Tools;
 use XoopsModules\Tadtools\Utility;
 
 include_once "header.php";
-$year = 108;
-$seme = 2;
+$year = Tools::get_club_year();
+$seme = Tools::get_club_seme();
 
 // 找出所有社團
-$club_arr = Tools::get_club($year, $seme);
+$club_arr = Club_main::get_clubs($year, $seme);
 
 // 找出600個學生
-$sql = "select a.stu_id, a.stu_name, a.stu_email, b.stu_grade, b.stu_class, b.stu_seat_no from `xx_scs_students` as a
+$sql = "select a.stu_id, a.stu_name, a.stu_email, b.stu_grade, b.stu_class, b.stu_seat_no, a.stu_no from `xx_scs_students` as a
 join `xx_scs_general` as b on a.stu_id=b.stu_id where b.school_year={$year} order by rand() limit 0,600";
 $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-while (list($stu_id, $stu_name, $stu_email, $stu_grade, $stu_class, $stu_seat_no) = $xoopsDB->fetchRow($result)) {
+while (list($stu_id, $stu_name, $stu_email, $stu_grade, $stu_class, $stu_seat_no, $stu_no) = $xoopsDB->fetchRow($result)) {
     if (empty($stu_email)) {
         $n1 = 109 - $stu_grade - 12;
         $class = sprintf("%'.02d", $stu_class);
@@ -29,7 +30,7 @@ while (list($stu_id, $stu_name, $stu_email, $stu_grade, $stu_class, $stu_seat_no
     $apply_id = $apply['apply_id'];
     // 若無申請編號建立之
     if (empty($apply_id)) {
-        $apply_id = Club_apply::store($stu_id, $year, $seme, $stu_name, $stu_grade, $stu_class, $stu_seat_no);
+        $apply_id = Club_apply::store($stu_id, $year, $seme, $stu_name, $stu_grade, $stu_class, $stu_seat_no, $stu_no);
     }
     shuffle($club_arr);
     $club_arr_list = implode(',', $club_arr);

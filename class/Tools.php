@@ -1,8 +1,8 @@
 <?php
 namespace XoopsModules\Club;
 
-use XoopsModules\Scs\Scs_general;
 use XoopsModules\Tadtools\TadDataCenter;
+use XoopsModules\Tadtools\Utility;
 
 /**
  * Scs module
@@ -77,7 +77,7 @@ class Tools
             }
 
             if (empty($stu_id)) {
-                $sql = "select a.`stu_id`,b.`stu_seat_no` from `" . $xoopsDB->prefix("scs_students") . "` as a
+                $sql = "select a.`stu_id`,b.`stu_seat_no`, a.`stu_no` from `" . $xoopsDB->prefix("scs_students") . "` as a
                 join `" . $xoopsDB->prefix("scs_general") . "` as b on a.`stu_id` = b.`stu_id`
                 where a.`stu_name`='{$name}' and b.`stu_grade`='{$stu_grade}' and b.`stu_class`='{$stu_class}' and b.`school_year`='{$school_year}'";
                 // die($sql);
@@ -86,11 +86,11 @@ class Tools
                 if ($total > 1) {
                     redirect_header($_SERVER['PHP_SELF'], 3, "{$name} 共有 {$total} 筆同名資料，請設定學生電子郵件（OpenID用的Email）以便精確判斷。");
                 } else {
-                    list($stu_id, $stu_seat_no) = $xoopsDB->fetchRow($result);
+                    list($stu_id, $stu_seat_no, $stu_no) = $xoopsDB->fetchRow($result);
                 }
             }
 
-            return [$stu_id, $stu_seat_no];
+            return [$stu_id, $stu_seat_no, $stu_no];
         }
         return false;
     }
@@ -112,8 +112,7 @@ class Tools
     public static function get_stu($stu_id, $school_year)
     {
         global $xoopsDB;
-        $stus = [];
-        $sql = "select a.`stu_id`, a.`stu_grade`, a.`stu_class`, a.`stu_seat_no`, b.`stu_name`
+        $sql = "select a.`stu_id`, a.`stu_grade`, a.`stu_class`, a.`stu_seat_no`, b.`stu_no`, b.`stu_name`
             from `" . $xoopsDB->prefix("scs_general") . "` as a
             join `" . $xoopsDB->prefix("scs_students") . "` as b on a.`stu_id`=b.`stu_id`
             where a.`stu_id`='{$stu_id}' and a.`school_year`='{$school_year}'";
@@ -122,20 +121,28 @@ class Tools
         return $stu;
     }
 
-    //取得某學年度的社團id
-    public static function get_club($year, $seme)
+    //取得某學年度的所有學生id
+    public static function get_stus($school_year)
     {
         global $xoopsDB;
-        $club_arr = [];
-        $sql = "select club_id from `" . $xoopsDB->prefix("club_main") . "` where club_year='$year' and club_seme='$seme' order by rand()";
-        $club_arr = [];
+        $stu_arr = [];
+        $sql = "select a.`stu_id`, a.`stu_grade`, a.`stu_class`, a.`stu_seat_no`, b.`stu_no`, b.`stu_name`, e.`club_title`, e.`club_year`, e.`club_seme`
+            from `" . $xoopsDB->prefix("scs_general") . "` as a
+            join `" . $xoopsDB->prefix("scs_students") . "` as b on a.`stu_id`=b.`stu_id`
+            join `" . $xoopsDB->prefix("club_apply") . "` as c on b.`stu_id`=c.`stu_id`
+            join `" . $xoopsDB->prefix("club_choice") . "` as d on c.`apply_id`=d.`apply_id`
+            join `" . $xoopsDB->prefix("club_main") . "` as e on e.`club_id`=d.`club_id`
+            where  a.`school_year`='{$school_year}' and d.choice_result='正取'
+            order by a.`stu_grade`, a.`stu_class`, a.`stu_seat_no`";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        while (list($club_id) = $xoopsDB->fetchRow($result)) {
-            $club_arr[$club_id] = $club_id;
+        while ($all = $xoopsDB->fetchArray($result)) {
+            $stu_grade = $all['stu_grade'];
+            $stu_class = $all['stu_class'];
+            $stu_seat_no = $all['stu_seat_no'];
+            $stu_arr[$stu_grade][$stu_class][$stu_seat_no] = $all;
         }
-        return $club_arr;
+        return $stu_arr;
     }
-
     public static function isOfficer($uid = '', $return_arr = true)
     {
         global $xoopsUser, $xoopsDB;
@@ -177,6 +184,7 @@ class Tools
             case 'store':
             case 'update':
             case 'view_ok':
+            case 'download':
             case 'destroy':
                 if ($_SESSION['club_adm'] or $_SESSION['officer']) {
                     return true;
@@ -265,125 +273,6 @@ class Tools
         $edit_able = ($now >= $start and $now <= $stop) ? true : false;
         $xoopsTpl->assign('edit_able', $edit_able);
         return $edit_able;
-    }
-
-    // 給選單用
-    public static function menu_option($stu_id = '', $def_stu_grade = '', $def_stu_class = '')
-    {
-        global $xoopsTpl, $xoopsDB;
-        $xoopsTpl->assign('stu_id', $stu_id);
-
-        $and_stu_id = '';
-        if ($stu_id) {
-            $and_stu_id = "and `stu_id` = '{$stu_id}'";
-        }
-
-        $and_stu_grade = '';
-        if ($def_stu_grade) {
-            $and_stu_grade = "and `stu_grade` = '{$def_stu_grade}'";
-            $xoopsTpl->assign('stu_grade', $def_stu_grade);
-        }
-
-        $and_stu_class = '';
-        if ($def_stu_class) {
-            $and_stu_class = "and `stu_class` = '{$def_stu_class}'";
-            $xoopsTpl->assign('stu_class', $def_stu_class);
-        }
-
-        $sql = "select * from `" . $xoopsDB->prefix("scs_general") . "`
-        where 1 {$and_stu_id} {$and_stu_grade} {$and_stu_class} order by `stu_grade`, `stu_class`, `stu_class`, `stu_seat_no`";
-
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        $arr = $school_year_to_grade = [];
-        while ($data = $xoopsDB->fetchArray($result)) {
-            $g = $data['stu_grade'];
-            $y = $data['school_year'];
-            $arr[$g] = $data;
-            $arr[$g]['favorite_subject'] = explode(';', $data['favorite_subject']);
-            $arr[$g]['difficult_subject'] = explode(';', $data['difficult_subject']);
-            $arr[$g]['expertise'] = explode(';', $data['expertise']);
-            $arr[$g]['interest'] = explode(';', $data['interest']);
-            $arr[$g]['grade_class'] = "{$y}-{$g}-{$data['stu_class']}";
-            $school_year_to_grade[$y] = $g;
-        }
-
-        $school_year = self::get_school_year();
-        $xoopsTpl->assign('school_year', $school_year);
-
-        $school_year_arr = self::get_general_data_arr('scs_general', 'school_year');
-        $xoopsTpl->assign('school_year_arr', $school_year_arr);
-
-        $condition['school_year'] = $school_year;
-        $stu_grade_arr = self::get_general_data_arr('scs_general', 'stu_grade', $condition);
-        $xoopsTpl->assign('stu_grade_arr', $stu_grade_arr);
-
-        $menu_stu_grade = $school_year_to_grade[$school_year];
-
-        if (!empty($menu_stu_grade)) {
-            if ($stu_id) {
-                $xoopsTpl->assign('stu_grade', $menu_stu_grade);
-            }
-
-            $condition['stu_grade'] = $menu_stu_grade;
-            $stu_class_arr = self::get_general_data_arr('scs_general', 'stu_class', $condition);
-            $xoopsTpl->assign('stu_class_arr', $stu_class_arr);
-        }
-
-        if (!empty($arr[$menu_stu_grade]['stu_class'])) {
-            if ($stu_id) {
-                $xoopsTpl->assign('stu_class', $arr[$menu_stu_grade]['stu_class']);
-            }
-
-            $condition['stu_class'] = $arr[$menu_stu_grade]['stu_class'];
-            $stu_arr = Scs_general::get_general_stu_arr($condition);
-            $xoopsTpl->assign('stu_arr', $stu_arr);
-        }
-
-        if ($stu_id) {
-            $sql = "select stu_seat_no,school_year,stu_grade,stu_class from `" . $xoopsDB->prefix("scs_general") . "`
-            where stu_id ='{$stu_id}'";
-            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-            list($stu_seat_no, $school_year, $stu_grade, $stu_class) = $xoopsDB->fetchRow($result);
-            $xoopsTpl->assign('stu_seat_no', $stu_seat_no);
-
-            // 下一筆
-            $sql = "select a.stu_id,a.stu_seat_no,b.stu_name from `" . $xoopsDB->prefix("scs_general") . "` as a
-            join `" . $xoopsDB->prefix("scs_students") . "` as b on a.stu_id=b.stu_id
-            where a.stu_seat_no > {$stu_seat_no} and a.school_year='{$school_year}' and a.stu_grade='{$stu_grade}' and a.stu_class='{$stu_class}'
-            order by a.`stu_seat_no`  LIMIT 0,1";
-            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-            list($next['stu_id'], $next['stu_seat_no'], $next['stu_name']) = $xoopsDB->fetchRow($result);
-            $xoopsTpl->assign('next', $next);
-
-            // 上一筆
-            $sql = "select a.stu_id,a.stu_seat_no,b.stu_name from `" . $xoopsDB->prefix("scs_general") . "` as a
-            join `" . $xoopsDB->prefix("scs_students") . "` as b on a.stu_id=b.stu_id
-            where a.stu_seat_no < {$stu_seat_no} and a.school_year='{$school_year}' and a.stu_grade='{$stu_grade}' and a.stu_class='{$stu_class}'
-            order by a.`stu_seat_no` DESC LIMIT 0,1";
-            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-            list($previous['stu_id'], $previous['stu_seat_no'], $previous['stu_name']) = $xoopsDB->fetchRow($result);
-            $xoopsTpl->assign('previous', $previous);
-        }
-    }
-
-    public static function get_config_arr($table = '', $name = '', $col = '')
-    {
-        global $xoopsTpl, $xoopsModuleConfig;
-
-        $def_arr = explode(';', $xoopsModuleConfig[$name]);
-        $col = empty($col) ? $name : $col;
-        $db_arr = self::get_general_data_arr($table, $col);
-        $all_arr = array_merge($db_arr, $def_arr);
-        $arr = array_unique($all_arr);
-        $xoopsTpl->assign($name . '_arr', $arr);
-    }
-
-    //轉為民國
-    public static function tw_birthday($birthday = '')
-    {
-        list($y, $m, $d) = explode('-', $birthday);
-        $y = $y - 1911;
-        return "{$y}-{$m}-{$d}";
     }
 
     //取得某項陣列

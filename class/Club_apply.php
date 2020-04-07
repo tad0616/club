@@ -56,6 +56,7 @@ class Club_apply
             $all['stu_grade'] = $myts->htmlSpecialChars($all['stu_grade']);
             $all['stu_class'] = $myts->htmlSpecialChars($all['stu_class']);
             $all['stu_seat_no'] = $myts->htmlSpecialChars($all['stu_seat_no']);
+            $all['stu_no'] = $myts->htmlSpecialChars($all['stu_no']);
             $all['apply_year'] = $myts->htmlSpecialChars($all['apply_year']);
             $all['apply_seme'] = $myts->htmlSpecialChars($all['apply_seme']);
             $all['stu_uid'] = (int) $all['stu_uid'];
@@ -108,6 +109,9 @@ class Club_apply
         //設定 stu_seat_no 欄位的預設值
         $stu_seat_no = !isset($DBV['stu_seat_no']) ? '' : $DBV['stu_seat_no'];
         $xoopsTpl->assign('stu_seat_no', $stu_seat_no);
+        //設定 stu_no 欄位的預設值
+        $stu_no = !isset($DBV['stu_no']) ? '' : $DBV['stu_no'];
+        $xoopsTpl->assign('stu_no', $stu_no);
         //設定 apply_year 欄位的預設值
         $apply_year = !isset($DBV['apply_year']) ? '' : $DBV['apply_year'];
         $xoopsTpl->assign('apply_year', $apply_year);
@@ -138,7 +142,7 @@ class Club_apply
     }
 
     //新增資料到club_apply中
-    public static function store($stu_id, $apply_year, $apply_seme, $stu_name = '', $stu_grade = '', $stu_class = '', $stu_seat_no = '')
+    public static function store($stu_id, $apply_year, $apply_seme, $stu_name = '', $stu_grade = '', $stu_class = '', $stu_seat_no = '', $stu_no = '')
     {
         global $xoopsDB, $xoopsUser;
 
@@ -151,6 +155,7 @@ class Club_apply
         $stu_grade = !empty($stu_grade) ? $stu_grade : (int) $xoopsUser->user_from();
         $stu_class = !empty($stu_class) ? $stu_class : (int) $xoopsUser->user_sig();
         $stu_seat_no = !empty($stu_seat_no) ? $stu_seat_no : (int) $_SESSION['stu_seat_no'];
+        $stu_no = !empty($stu_no) ? $stu_no : (int) $_SESSION['stu_no'];
         $apply_year = (int) $apply_year;
         $apply_seme = (int) $apply_seme;
         //取得使用者編號
@@ -164,6 +169,7 @@ class Club_apply
         `stu_grade`,
         `stu_class`,
         `stu_seat_no`,
+        `stu_no`,
         `apply_year`,
         `apply_seme`,
         `stu_uid`,
@@ -174,6 +180,7 @@ class Club_apply
         '{$stu_grade}',
         '{$stu_class}',
         '{$stu_seat_no}',
+        '{$stu_no}',
         '{$apply_year}',
         '{$apply_seme}',
         '{$stu_uid}',
@@ -208,12 +215,13 @@ class Club_apply
         $all['stu_grade'] = $myts->htmlSpecialChars($all['stu_grade']);
         $all['stu_class'] = $myts->htmlSpecialChars($all['stu_class']);
         $all['stu_seat_no'] = $myts->htmlSpecialChars($all['stu_seat_no']);
+        $all['stu_no'] = $myts->htmlSpecialChars($all['stu_no']);
         $all['apply_year'] = $myts->htmlSpecialChars($all['apply_year']);
         $all['apply_seme'] = $myts->htmlSpecialChars($all['apply_seme']);
         $all['stu_uid'] = (int) $all['stu_uid'];
         $all['apply_time'] = $myts->htmlSpecialChars($all['apply_time']);
 
-        //以下會產生這些變數： $stu_id, $stu_name, $stu_grade, $stu_class, $stu_seat_no, $apply_year, $apply_seme, $stu_uid, $apply_time
+        //以下會產生這些變數： $stu_id, $stu_name, $stu_grade, $stu_class, $stu_seat_no, $stu_no, $apply_year, $apply_seme, $stu_uid, $apply_time
         foreach ($all as $k => $v) {
             $$k = $v;
             $xoopsTpl->assign($k, $v);
@@ -251,6 +259,7 @@ class Club_apply
         $stu_grade = (int) $_POST['stu_grade'];
         $stu_class = (int) $_POST['stu_class'];
         $stu_seat_no = (int) $_POST['stu_seat_no'];
+        $stu_no = $myts->addSlashes($_POST['stu_no']);
         $apply_year = (int) $_POST['apply_year'];
         $apply_seme = (int) $_POST['apply_seme'];
         //取得使用者編號
@@ -264,6 +273,7 @@ class Club_apply
         `stu_grade` = '{$stu_grade}',
         `stu_class` = '{$stu_class}',
         `stu_seat_no` = '{$stu_seat_no}',
+        `stu_no` = '{$stu_no}',
         `apply_year` = '{$apply_year}',
         `apply_seme` = '{$apply_seme}',
         `stu_uid` = '{$stu_uid}',
@@ -325,28 +335,6 @@ class Club_apply
         return $data_arr;
     }
 
-    //新增club_apply計數器
-    public static function add_counter($apply_id = '')
-    {
-        global $xoopsDB;
 
-        if (empty($apply_id)) {
-            return;
-        }
-
-        $sql = "update `" . $xoopsDB->prefix("club_apply") . "` set `` = `` + 1
-        where `apply_id` = '{$apply_id}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-    }
-
-    //自動取得club_apply的最新排序
-    public static function max_sort()
-    {
-        global $xoopsDB;
-        $sql = "select max(``) from `" . $xoopsDB->prefix("club_apply") . "`";
-        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
-        list($sort) = $xoopsDB->fetchRow($result);
-        return ++$sort;
-    }
 
 }

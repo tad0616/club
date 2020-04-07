@@ -1,8 +1,9 @@
-<{if 'update'|have_club_power}>
-    <div class="pull-right bar">
-        <a href="index.php?op=choice_result_random&club_id=<{$club_id}>" class="btn btn-primary"><i class="fa fa-check-square-o" aria-hidden="true"></i> 亂數錄取</a>
-    </div>
-
+<{if 'import'|have_apply_power}>
+    <{if $ok_num < $club_num}>
+        <div class="pull-right bar">
+            <a href="index.php?op=choice_result_random&club_id=<{$club_id}>" class="btn btn-primary"><i class="fa fa-check-square-o" aria-hidden="true"></i> 亂數錄取</a>
+        </div>
+    <{/if}>
     <h3 class="club" style="margin:20px auto;">
     <{$club_year}>-<{$club_seme}> 選填<{$club_title}>學生一覽
     </h3>
@@ -20,7 +21,7 @@
         </thead>
 
         <tbody>
-        <{foreach from=$stu_arr item=stu name=stu}>
+        <{foreach from=$choice1_stu_arr item=stu name=stu}>
             <tr>
                 <td><{$smarty.foreach.stu.iteration}></td>
                 <td><{$stu.stu_grade}>-<{$stu.stu_class}></td>

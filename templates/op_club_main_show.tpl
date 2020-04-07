@@ -8,7 +8,7 @@
     <{if 'create'|have_club_power}>
         <a href="<{$xoops_url}>/modules/club/index.php?op=club_main_create" class="btn btn-info"><i class="fa fa-plus"></i> 新增社團</a>
     <{/if}>
-    <a href="<{$xoops_url}>/modules/club/" class="btn btn-success"><i class="fa fa-undo" aria-hidden="true"></i> <{$smarty.const._TAD_HOME}></a>
+    <a href="<{$xoops_url}>/modules/club/" class="btn btn-success"><i class="fa fa-undo" aria-hidden="true"></i> 回社團一覽</a>
 </div>
 
 
@@ -32,13 +32,13 @@
     <div style="margin:30px auto;">
         <div id="clubTab">
             <ul class="resp-tabs-list vert">
-                <li> <{$club_title}>正式社員 </li>
+                <{if $ok_num}><li> <{$club_title}>正式社員 </li><{/if}>
                 <li> 將<{$club_title}>填為第一志願者 </li>
                 <{if $club_note}><li> 備註 </li><{/if}>
             </ul>
 
             <div class="resp-tabs-container vert">
-                <div> <{includeq file="$xoops_rootpath/modules/$xoops_dirname/templates/sub_club_ok_stu.tpl"}> </div>
+                <{if $ok_num}><div> <{includeq file="$xoops_rootpath/modules/$xoops_dirname/templates/sub_club_ok_stu.tpl"}> </div><{/if}>
                 <div> <{includeq file="$xoops_rootpath/modules/$xoops_dirname/templates/sub_choice1_stu.tpl"}> </div>
                 <{if $club_note}><div> <{$club_note}> </div><{/if}>
             </div>

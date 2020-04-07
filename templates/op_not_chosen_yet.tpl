@@ -1,12 +1,13 @@
 <div id="club_main_save_msg"></div>
 <h2 class="club"><{$year}>學年度第<{$seme}>學期尚未選填學生一覽</h2>
 
-<{if 'import'|have_apply_power}>
-    <div class="text-right">
+<div class="text-right">
     <a href="index.php" class="btn btn-success"><i class="fa fa-undo" aria-hidden="true"></i> 回社團一覽</a>
-    <a href="index.php?op=batch_apply&year=<{$year}>&seme=<{$seme}>" class="btn btn-primary"><i class="fa fa-random" aria-hidden="true"></i> 批次亂數選填</a>
-    </div>
-<{/if}>
+    <{if 'import'|have_apply_power and $not_chosen_yet_count!=0}>
+        <a href="index.php?op=batch_apply&year=<{$year}>&seme=<{$seme}>" class="btn btn-primary"><i class="fa fa-random" aria-hidden="true"></i> 替<{$not_chosen_yet_count}>位學生批次亂數選填</a>
+    <{/if}>
+</div>
+
 <table class="table table-striped table-hover" style="background:white;margin:20px auto;">
     <thead>
         <tr class="info">

@@ -5,6 +5,7 @@ CREATE TABLE `club_apply` (
   `stu_grade` tinyint(3) unsigned default '0' COMMENT '年級',
   `stu_class` tinyint(3) unsigned default '0' COMMENT '班級',
   `stu_seat_no` tinyint(3) unsigned default '0' COMMENT '座號',
+  `stu_no` varchar(20) default '' COMMENT '學號',
   `apply_year` tinyint(3) unsigned default '0' COMMENT '學年',
   `apply_seme` tinyint(3) unsigned default '0' COMMENT '學期',
   `stu_uid` mediumint(9) unsigned default '0' COMMENT '學生uid',

@@ -3,11 +3,11 @@ use XoopsModules\Tadtools\Utility;
 
 include_once "header.php";
 
-$sql = "select a.stu_name, a.stu_email, b.stu_grade, b.stu_class, b.stu_seat_no from `xx_scs_students` as a
+$sql = "select a.stu_name, a.stu_email, b.stu_grade, b.stu_class, b.stu_seat_no, a.stu_no from `xx_scs_students` as a
 join `xx_scs_general` as b on a.stu_id=b.stu_id where b.school_year=108";
 $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
-while (list($stu_name, $stu_email, $stu_grade, $stu_class, $stu_seat_no) = $xoopsDB->fetchRow($result)) {
+while (list($stu_name, $stu_email, $stu_grade, $stu_class, $stu_seat_no, $stu_no) = $xoopsDB->fetchRow($result)) {
     if (empty($stu_email)) {
         $n1 = 109 - $stu_grade - 12;
         $class = sprintf("%'.02d", $stu_class);

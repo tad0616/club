@@ -50,7 +50,7 @@ class Club_choice
                 $apply_id = Club_apply::store($stu_id, $year, $seme);
             } else {
                 $stu = Tools::get_stu($stu_id, $year);
-                $apply_id = Club_apply::store($stu_id, $year, $seme, $stu['stu_name'], $stu['stu_grade'], $stu['stu_class'], $stu['stu_seat_no']);
+                $apply_id = Club_apply::store($stu_id, $year, $seme, $stu['stu_name'], $stu['stu_grade'], $stu['stu_class'], $stu['stu_seat_no'], $stu['stu_no']);
 
             }
 
@@ -273,7 +273,7 @@ class Club_choice
         if ($only_stu_id) {
             return $stu_arr;
         }
-
+        $not_chosen_yet_count = 0;
         foreach ($stu_arr as $stu_id) {
 
             $stu = Tools::get_stu($stu_id, $year);
@@ -283,6 +283,7 @@ class Club_choice
             $key = "{$stu_grade}-{$stu_class}";
             if (!empty($stu)) {
                 $not_chosen_yet_stu_arr[$key][$stu_seat_no] = $stu;
+                $not_chosen_yet_count++;
             } else {
                 $not_data[] = $stu_id;
             }
@@ -291,6 +292,7 @@ class Club_choice
         ksort($not_chosen_yet_stu_arr);
         $xoopsTpl->assign('not_data', $not_data);
         $xoopsTpl->assign('not_chosen_yet_stu_arr', $not_chosen_yet_stu_arr);
+        $xoopsTpl->assign('not_chosen_yet_count', $not_chosen_yet_count);
     }
 
     // 批次亂數選
@@ -312,7 +314,7 @@ class Club_choice
                 $apply_id = $apply['apply_id'];
                 if (empty($apply_id)) {
                     $stu = Tools::get_stu($stu_id, $year);
-                    $apply_id = Club_apply::store($stu_id, $year, $seme, $stu['stu_name'], $stu['stu_grade'], $stu['stu_class'], $stu['stu_seat_no']);
+                    $apply_id = Club_apply::store($stu_id, $year, $seme, $stu['stu_name'], $stu['stu_grade'], $stu['stu_class'], $stu['stu_seat_no'], $stu['stu_no']);
 
                     $apply = Club_apply::get('', $stu_id, $year, $seme);
                     $apply_id = $apply['apply_id'];
@@ -373,6 +375,7 @@ class Club_choice
         Tools::chk_apply_power(__FILE__, __LINE__, 'index');
         $apply_arr = Club_apply::get_all($year, $seme);
         $no_result_yet = [];
+        $clubs_not_ok_sum = 0;
         foreach ($apply_arr as $apply_id => $stu) {
             $club_id = self::get_choice_result($apply_id, '正取');
             if (empty($club_id)) {
@@ -383,6 +386,7 @@ class Club_choice
                 $key = "{$stu_grade}-{$stu_class}";
                 if (!empty($stu)) {
                     $no_result_yet[$key][$stu_seat_no] = $stu;
+                    $clubs_not_ok_sum++;
                 } else {
                     $not_data[] = $stu_id;
                 }
@@ -390,7 +394,10 @@ class Club_choice
         }
         ksort($no_result_yet);
         $xoopsTpl->assign('no_result_yet', $no_result_yet);
+        $xoopsTpl->assign('clubs_not_ok_sum', $clubs_not_ok_sum);
         $xoopsTpl->assign('not_data', $not_data);
+        $xoopsTpl->assign('year', $year);
+        $xoopsTpl->assign('seme', $seme);
         return $no_result_yet;
     }
 
@@ -408,7 +415,7 @@ class Club_choice
 
             $stu_grade = sprintf("%'.02d", $stu['stu_grade']);
             $stu_class = sprintf("%'.02d", $stu['stu_class']);
-            $stu_seat_no = (int) $stu['stu_seat_no'];
+            $stu_seat_no = sprintf("%'.02d", $stu['stu_seat_no']);
             $key = "{$stu_grade}-{$stu_class}-{$stu_seat_no}";
 
             $ok_stu[$key] = $stu;
@@ -472,12 +479,19 @@ class Club_choice
         if ($need_num > 0) {
             $sql = "select a.*, b.choice_result, b.club_score from `" . $xoopsDB->prefix("club_apply") . "` as a
             join `" . $xoopsDB->prefix("club_choice") . "` as b on a.apply_id = b.apply_id
-            where b.club_id='$club_id' and b.choice_sort='$choice_sort' and b.choice_result='' order by b.choice_result desc, rand() limit 0, {$need_num}";
-            // echo $sql . '<br>';
+            where b.club_id='$club_id' and b.choice_sort='$choice_sort' and b.choice_result='' order by rand()";
 
             $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            $i = 0;
             while ($stu = $xoopsDB->fetchArray($result)) {
-                self::set_choice_result($stu['apply_id'], $club_id, '正取');
+                $ok_club_id = self::get_choice_result($stu['apply_id'], '正取');
+                if (empty($ok_club_id)) {
+                    self::set_choice_result($stu['apply_id'], $club_id, '正取');
+                    $i++;
+                    if ($i >= $need_num) {
+                        return;
+                    }
+                }
             }
         }
     }

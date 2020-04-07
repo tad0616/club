@@ -9,7 +9,7 @@ if (!isset($_SESSION['club_adm'])) {
 // 若是學生（其值是編號）
 if (!isset($_SESSION['stu_id']) or !isset($_SESSION['stu_seat_no'])) {
     if ($xoopsUser) {
-        list($_SESSION['stu_id'], $_SESSION['stu_seat_no']) = Tools::isStudent();
+        list($_SESSION['stu_id'], $_SESSION['stu_seat_no'], $_SESSION['stu_no']) = Tools::isStudent();
     } else {
         return false;
     }
