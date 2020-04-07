@@ -176,6 +176,7 @@ class Tools
             case 'create':
             case 'store':
             case 'update':
+            case 'view_ok':
             case 'destroy':
                 if ($_SESSION['club_adm'] or $_SESSION['officer']) {
                     return true;

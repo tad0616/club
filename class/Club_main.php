@@ -6,6 +6,7 @@ use XoopsModules\Club\Club_main;
 use XoopsModules\Club\Tools;
 use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\DataList;
+use XoopsModules\Tadtools\EasyResponsiveTabs;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
 use XoopsModules\Tadtools\Utility;
@@ -35,9 +36,16 @@ class Club_main
     {
         global $xoopsDB, $xoopsTpl;
 
-        // 找出個社團被當作第一志願的人數
+        // 找出各社團被當作第一志願的人數
         $choice1 = Club_choice::get_sort_count($year, $seme, 1);
         $xoopsTpl->assign('choice1', $choice1);
+
+        // 找出各社團被正取人數
+        $ok_num = Club_choice::get_ok_num($year, $seme);
+        $ok_sum = (int) array_sum($ok_num);
+        $xoopsTpl->assign('ok_num', $ok_num);
+        $xoopsTpl->assign('ok_sum', $ok_sum);
+
         $xoopsTpl->assign('year', $year);
         $xoopsTpl->assign('seme', $seme);
 
@@ -45,6 +53,10 @@ class Club_main
         $stu_id_arr = Tools::get_school_year_stus_id($year);
         $stu_count = sizeof($stu_id_arr);
         $xoopsTpl->assign('stu_count', $stu_count);
+
+        // 尚未正取數
+        $not_ok_sum = $stu_count - $ok_sum;
+        $xoopsTpl->assign('not_ok_sum', $not_ok_sum);
 
         // 找出已選填人數
         $chosen_stu = Club_choice::get_chosen_stu($year, $seme);
@@ -200,8 +212,13 @@ class Club_main
 
         //找出目前當作第一志願的學生
         $stu_arr = Club_choice::get_sort_stu($club_id, 1);
-        ksort($stu_arr);
         $xoopsTpl->assign('stu_arr', $stu_arr);
+
+        // 已正取學生
+        $ok_stu = Club_choice::choice_result_ok($club_id);
+        $ok_num = \sizeof($ok_stu);
+        $xoopsTpl->assign('ok_stu', $ok_stu);
+        $xoopsTpl->assign('ok_num', $ok_num);
 
         $myts = \MyTextSanitizer::getInstance();
         //過濾讀出的變數值
@@ -234,6 +251,10 @@ class Club_main
         $SweetAlert->render('club_main_destroy_func', "{$_SERVER['PHP_SELF']}?op=club_main_destroy&club_id=", "club_id");
 
         $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
+
+        $EasyResponsiveTabs = new EasyResponsiveTabs('#clubTab');
+        $EasyResponsiveTabs->rander();
+
     }
 
     //更新club_main某一筆資料

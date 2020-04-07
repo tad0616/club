@@ -193,7 +193,7 @@ class Club_choice
         return $data_arr;
     }
 
-    //取得個社團被當作第一志願的數量
+    //取得各社團被當作第一志願的數量
     public static function get_sort_count($year, $seme, $sort = 1)
     {
         global $xoopsDB;
@@ -209,13 +209,27 @@ class Club_choice
         return $data_arr;
     }
 
-    //取得個社團被當作第一志願的學生
+    //取得各社團已正取的數量
+    public static function get_ok_num($year, $seme)
+    {
+        global $xoopsDB;
+        $sql = "select club_id,count(*) from `" . $xoopsDB->prefix("club_choice") . "`
+        where choice_result='正取'
+        group by club_id";
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        while (list($club_id, $count) = $xoopsDB->fetchRow($result)) {
+            $data_arr[$club_id] = (int) $count;
+        }
+        return $data_arr;
+    }
+
+    //取得各社團被當作第一志願的學生
     public static function get_sort_stu($club_id, $sort = 1)
     {
         global $xoopsDB;
-        $sql = "select a.*, b.choice_result, b.club_score from `" . $xoopsDB->prefix("club_apply") . "` as a
+        $sql = "select a.*, b.choice_result, b.choice_sort from `" . $xoopsDB->prefix("club_apply") . "` as a
         join `" . $xoopsDB->prefix("club_choice") . "` as b on a.apply_id = b.apply_id
-        where b.club_id='$club_id' and b.choice_sort='$sort'";
+        where b.club_id='$club_id' and b.choice_sort='$sort' order by rand()";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $stu_arr = [];
         while ($all = $xoopsDB->fetchArray($result)) {
@@ -225,6 +239,7 @@ class Club_choice
             $key = "{$stu_grade}{$stu_class}{$stu_seat_no}";
             $stu_arr[$key] = $all;
         }
+        ksort($stu_arr);
         return $stu_arr;
     }
 
@@ -332,16 +347,138 @@ class Club_choice
     {
         global $xoopsDB;
         Tools::chk_apply_power(__FILE__, __LINE__, 'update');
-        $sql = "update `" . $xoopsDB->prefix("club_choice") . "` set choice_result='$val' where apply_id='{$apply_id}' and club_id='{$club_id}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $get_club_id = self::get_choice_result($apply_id, $val);
+        if (empty($get_club_id)) {
+            $sql = "update `" . $xoopsDB->prefix("club_choice") . "` set choice_result='$val' where apply_id='{$apply_id}' and club_id='{$club_id}' and choice_result=''";
+            // echo "$sql<br>";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
     }
 
-    // 亂數錄取
-    public static function choice_result_random($club_id)
+    // 取得某人錄取狀態
+    public static function get_choice_result($apply_id, $val = '')
+    {
+        global $xoopsDB;
+        Tools::chk_apply_power(__FILE__, __LINE__, 'index');
+        $sql = "select club_id from `" . $xoopsDB->prefix("club_choice") . "` where apply_id='{$apply_id}' and choice_result='{$val}'";
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        list($club_id) = $xoopsDB->fetchRow($result);
+        return $club_id;
+    }
+
+    // 尚未錄取的學生列表
+    public static function no_result_yet($year, $seme)
+    {
+        global $xoopsDB, $xoopsTpl;
+        Tools::chk_apply_power(__FILE__, __LINE__, 'index');
+        $apply_arr = Club_apply::get_all($year, $seme);
+        $no_result_yet = [];
+        foreach ($apply_arr as $apply_id => $stu) {
+            $club_id = self::get_choice_result($apply_id, '正取');
+            if (empty($club_id)) {
+
+                $stu_grade = sprintf("%'.02d", $stu['stu_grade']);
+                $stu_class = sprintf("%'.02d", $stu['stu_class']);
+                $stu_seat_no = (int) $stu['stu_seat_no'];
+                $key = "{$stu_grade}-{$stu_class}";
+                if (!empty($stu)) {
+                    $no_result_yet[$key][$stu_seat_no] = $stu;
+                } else {
+                    $not_data[] = $stu_id;
+                }
+            }
+        }
+        ksort($no_result_yet);
+        $xoopsTpl->assign('no_result_yet', $no_result_yet);
+        $xoopsTpl->assign('not_data', $not_data);
+        return $no_result_yet;
+    }
+
+    // 取得正取
+    public static function choice_result_ok($club_id, $only_num = false)
+    {
+        global $xoopsDB;
+        // 先找已經正取的人數
+        $sql = "select a.choice_sort, b.* from `" . $xoopsDB->prefix("club_choice") . "` as a
+        join `" . $xoopsDB->prefix("club_apply") . "` as b on a.apply_id=b.apply_id
+        where a.club_id='$club_id' and a.choice_result='正取'";
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $ok_stu = [];
+        while ($stu = $xoopsDB->fetchArray($result)) {
+
+            $stu_grade = sprintf("%'.02d", $stu['stu_grade']);
+            $stu_class = sprintf("%'.02d", $stu['stu_class']);
+            $stu_seat_no = (int) $stu['stu_seat_no'];
+            $key = "{$stu_grade}-{$stu_class}-{$stu_seat_no}";
+
+            $ok_stu[$key] = $stu;
+        }
+
+        ksort($ok_stu);
+        if ($only_num) {
+            return sizeof($ok_stu);
+        } else {
+            return $ok_stu;
+        }
+    }
+
+    // 批次亂數錄取
+    public static function choice_result_all_random($year, $seme)
     {
         global $xoopsDB;
         Tools::chk_apply_power(__FILE__, __LINE__, 'update');
-        $sql = "update `" . $xoopsDB->prefix("club_choice") . "` set choice_result='$val' where apply_id='{$apply_id}' and club_id='{$club_id}'";
-        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        // 找出所有社團
+        $clubs = Club_main::get_all($year, $seme);
+        $clubs_num = sizeof($clubs);
+        for ($i = 1; $i <= $clubs_num; $i++) {
+            // echo "<h2>第 $i 志願</h2>";
+            foreach ($clubs as $club_id => $club) {
+
+                // 找出欲錄取總人數
+                $club = Club_main::get($club_id);
+                $club_num = $club['club_num'];
+
+                // 找第N志願的人數
+                $choice_num = self::get_sort_count($year, $seme, $i);
+
+                // 先已經錄取的人數
+                $ok_num = self::choice_result_ok($club_id, true);
+
+                // 還未錄取到所需人數
+                if ($ok_num < $club_num) {
+                    // echo "<h3>{$club['club_title']} : 應錄取 $club_num 人，目前僅 $ok_num 人</h3>";
+                    self::choice_result_random($club_id, $i);
+                }
+
+            }
+        }
+        // exit;
+    }
+
+    // 亂數錄取
+    public static function choice_result_random($club_id, $choice_sort = 1)
+    {
+        global $xoopsDB;
+        Tools::chk_apply_power(__FILE__, __LINE__, 'update');
+        // 找出錄取人數
+        $club = Club_main::get($club_id);
+
+        // 先已經錄取的人數
+        $ok_num = self::choice_result_ok($club_id, true);
+
+        // 需補齊的人數
+        $need_num = $club['club_num'] - $ok_num;
+
+        if ($need_num > 0) {
+            $sql = "select a.*, b.choice_result, b.club_score from `" . $xoopsDB->prefix("club_apply") . "` as a
+            join `" . $xoopsDB->prefix("club_choice") . "` as b on a.apply_id = b.apply_id
+            where b.club_id='$club_id' and b.choice_sort='$choice_sort' and b.choice_result='' order by b.choice_result desc, rand() limit 0, {$need_num}";
+            // echo $sql . '<br>';
+
+            $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+            while ($stu = $xoopsDB->fetchArray($result)) {
+                self::set_choice_result($stu['apply_id'], $club_id, '正取');
+            }
+        }
     }
 }

@@ -312,10 +312,10 @@ class Club_apply
     }
 
     //取得club_apply所有資料陣列
-    public static function get_all()
+    public static function get_all($apply_year, $apply_seme)
     {
         global $xoopsDB;
-        $sql = "select * from `" . $xoopsDB->prefix("club_apply") . "`";
+        $sql = "select * from `" . $xoopsDB->prefix("club_apply") . "` where apply_year='{$apply_year}' and apply_seme='{$apply_seme}'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data_arr = [];
         while ($data = $xoopsDB->fetchArray($result)) {

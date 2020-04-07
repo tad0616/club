@@ -9,15 +9,15 @@
         </div>
     <{else}>
         <div class="alert alert-danger">
-        目前無法選填，選填時間為 <{$setup.stu_start_sign.0}> 至 <{$setup.stu_stop_sign.0}> 止
+        目前無法排序選填，選填時間為 <{$setup.stu_start_sign.0}> 至 <{$setup.stu_stop_sign.0}> 止
         </div>
     <{/if}>
 
     <{if 'import'|have_apply_power}>
         <div class="text-right">
-            <a href="index.php?op=not_chosen_yet&year=<{$year}>&seme=<{$seme}>" class="btn btn-success">回尚未選填學生一覽</a>
+            <a href="index.php?op=not_chosen_yet&year=<{$year}>&seme=<{$seme}>" class="btn btn-success"><i class="fa fa-undo" aria-hidden="true"></i> 回尚未選填學生一覽</a>
             <{if $mode=='apply_by_officer'}>
-                <a href="index.php?op=batch_apply&year=<{$year}>&seme=<{$seme}>&apply_id=<{$apply_id}>&stu_id=<{$apply.stu_id}>" class="btn btn-primary">替<{$apply.stu_name}>亂數選填</a>
+                <a href="index.php?op=batch_apply&year=<{$year}>&seme=<{$seme}>&apply_id=<{$apply_id}>&stu_id=<{$apply.stu_id}>" class="btn btn-primary"><i class="fa fa-random" aria-hidden="true"></i> 替<{$apply.stu_name}>亂數選填</a>
             <{/if}>
         </div>
     <{/if}>
@@ -27,7 +27,11 @@
             <div class="col-sm-4" id="sort_<{$club_id}>">
                 <div class="club_choice" <{if $choice1.$club_id}>data-toggle="tooltip" title="有<{$choice1.$club_id}>人將之設為第 1 志願"<{/if}>>
                 <span class="choice_sort"><{if $choice.choice_sort}><{$choice.choice_sort}><{else}>?<{/if}></span>
-                <{$choice.club_title}>
+                <a href="index.php?club_id=<{$choice.club_id}>"><{$choice.club_title}></a>
+                <{if $choice.choice_result=="正取"}>
+                <img src="images/checked.png" alt="<{$choice.choice_result}>">
+                <span style="color: blue;"><{$choice.choice_result}></span>
+                <{/if}>
                 </div>
             </div>
         <{/foreach}>

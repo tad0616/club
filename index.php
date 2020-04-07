@@ -98,17 +98,31 @@ switch ($op) {
         header("location: index.php?club_id=$club_id");
         exit;
 
+    case "choice_result_all_random":
+        Club_choice::choice_result_all_random($year, $seme);
+        header("location: index.php");
+        exit;
+
     case "choice_result_random":
-        Club_choice::choice_result_random($club_id);
+        Club_choice::choice_result_random($club_id, 1);
         header("location: index.php?club_id=$club_id");
         exit;
+
+    case "no_result_yet":
+        Club_choice::no_result_yet($year, $seme);
+        break;
 
     //預設動作
     default:
         if ($_SESSION['stu_id']) {
-            $stu_edit_able = Tools::stu_edit_able();
-            Club_choice::index($year, $seme);
-            $op = 'club_choice_index';
+            if (!empty($club_id)) {
+                Club_main::show($club_id);
+                $op = 'club_main_show';
+            } else {
+                $stu_edit_able = Tools::stu_edit_able();
+                Club_choice::index($year, $seme);
+                $op = 'club_choice_index';
+            }
         } else {
             if (!empty($stu_id)) {
                 $stu_edit_able = Tools::stu_edit_able();
