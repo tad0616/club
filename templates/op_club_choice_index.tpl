@@ -31,6 +31,7 @@
                 <{if $choice.choice_result=="正取"}>
                 <img src="images/checked.png" alt="<{$choice.choice_result}>">
                 <span style="color: blue;"><{$choice.choice_result}></span>
+                <{if $choice.club_score}> (<span style="color: green;"><{$choice.club_score}>分</span>)<{/if}>
                 <{/if}>
                 </div>
             </div>

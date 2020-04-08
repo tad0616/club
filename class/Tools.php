@@ -264,13 +264,16 @@ class Tools
     {
         global $xoopsTpl;
         $TadDataCenter = new TadDataCenter('club');
-        $club_year = Tools::get_club_year();
+        $club_year = self::get_club_year();
         $TadDataCenter->set_col('club_setup', $club_year);
         $setup = $TadDataCenter->getData();
         $xoopsTpl->assign('setup', $setup);
         $now = time();
         $start = strtotime($setup['stu_start_sign'][0]);
         $stop = strtotime($setup['stu_stop_sign'][0]);
+        if (empty($start) or empty($stop)) {
+            return false;
+        }
         $edit_able = ($now >= $start and $now <= $stop) ? true : false;
         $xoopsTpl->assign('edit_able', $edit_able);
         return $edit_able;
@@ -317,10 +320,13 @@ class Tools
         return $xoopsModuleConfig;
     }
 
-    // 亂數錄取
+    // 匯入成績
     public static function import_score($club_id)
     {
         global $xoopsDB;
+
+        self::chk_club_power(__FILE__, __LINE__, 'import');
+
         $inputFileName = $_FILES['scorefile']['tmp_name'];
         $club_stu_arr = Club_choice::choice_result_ok($club_id);
         $stu_apply_id = [];
