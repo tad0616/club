@@ -1,6 +1,7 @@
 <?php
 namespace XoopsModules\Club;
 
+use XoopsModules\Club\Club_choice;
 use XoopsModules\Tadtools\TadDataCenter;
 use XoopsModules\Tadtools\Utility;
 
@@ -304,6 +305,46 @@ class Tools
 
         }
         return $arr;
+    }
+
+    //取得輔導系統的偏好設定
+    public static function get_xoopsModuleConfig()
+    {
+        $modhandler = xoops_gethandler('module');
+        $xoopsModule = $modhandler->getByDirname("scs");
+        $config_handler = xoops_gethandler('config');
+        $xoopsModuleConfig = $config_handler->getConfigsByCat(0, $xoopsModule->mid());
+        return $xoopsModuleConfig;
+    }
+
+    // 亂數錄取
+    public static function import_score($club_id)
+    {
+        global $xoopsDB;
+        $inputFileName = $_FILES['scorefile']['tmp_name'];
+        $club_stu_arr = Club_choice::choice_result_ok($club_id);
+        $stu_apply_id = [];
+        foreach ($club_stu_arr as $stu) {
+            $stu_apply_id[$stu['stu_no']] = $stu['apply_id'];
+        }
+
+        require XOOPS_ROOT_PATH . '/modules/tadtools/vendor/phpoffice/phpexcel/Classes/PHPExcel/IOFactory.php';
+        $reader = \PHPExcel_IOFactory::createReader('Excel2007');
+        $PHPExcel = $reader->load($inputFileName);
+
+        $sheet = $PHPExcel->getSheet(0); // 讀取第一個工作表(編號從 0 開始)
+        $highestRow = $sheet->getHighestRow(); // 取得總列數
+
+        for ($row = 2; $row <= $highestRow; $row++) {
+
+            $stu_no = $sheet->getCellByColumnAndRow(2, $row)->getValue();
+            $stu_name = $sheet->getCellByColumnAndRow(3, $row)->getValue();
+            $club_score = $sheet->getCellByColumnAndRow(4, $row)->getValue();
+
+            //寫入資料庫
+            $sql = "update `" . $xoopsDB->prefix("club_choice") . "` set club_score='$club_score' where apply_id='{$stu_apply_id[$stu_no]}' and club_id='{$club_id}' and choice_result='正取'";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        }
     }
 
 }

@@ -1,4 +1,3 @@
-<div id="club_main_save_msg"></div>
 <h2 class="club"><{$year}>學年度第<{$seme}>學期尚未錄取學生一覽</h2>
 
 <div class="pull-right bar">

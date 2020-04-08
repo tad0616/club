@@ -406,7 +406,7 @@ class Club_choice
     {
         global $xoopsDB;
         // 先找已經正取的人數
-        $sql = "select a.choice_sort, b.* from `" . $xoopsDB->prefix("club_choice") . "` as a
+        $sql = "select a.choice_sort, a.club_score, b.* from `" . $xoopsDB->prefix("club_choice") . "` as a
         join `" . $xoopsDB->prefix("club_apply") . "` as b on a.apply_id=b.apply_id
         where a.club_id='$club_id' and a.choice_result='正取'";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
@@ -495,4 +495,5 @@ class Club_choice
             }
         }
     }
+
 }

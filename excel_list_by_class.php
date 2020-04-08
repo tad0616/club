@@ -34,7 +34,10 @@ $apply_id = system_CleanVars($_REQUEST, 'apply_id', 0, 'int');
 Tools::chk_club_power(__FILE__, __LINE__, 'download');
 
 $stus = Tools::get_stus($year);
-$excel_title = "{$year}-{$seme}社團結果依班級排列";
+
+$scsModuleConfig = Tools::get_xoopsModuleConfig();
+
+$excel_title = "{$year}-{$seme}{$scsModuleConfig['school_name']}社團結果依班級排列";
 
 /** Error reporting */
 error_reporting(E_ALL);

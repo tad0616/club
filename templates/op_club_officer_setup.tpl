@@ -63,6 +63,16 @@
     </div>
 
 
+    <div class="form-group row custom-gutter">
+        <label class="col-sm-2 col-form-label text-sm-right control-label">
+            <{$club_year}>學年社團上課日期<br>製作點名簿用<br>請用「;」隔開，如範例
+        </label>
+        <div class="col-sm-10">
+            <input type="text" name="club[club_date]" id="club_date" class="form-control" value="<{$setup.club_date.0}>" placeholder="3/9 (6);3/9 (7);3/16 (6);3/16 (7);3/23 (6);3/23 (7);3/30 (6);3/30 (7);4/13 (6);4/13 (7);4/20 (6);4/20 (7);6/8 (6);6/8 (7);6/22 (6);6/22 (7)
+">
+        </div>
+    </div>
+
 
     <div class="text-center">
         <input type="hidden" name="club_year" value="<{$club_year}>">

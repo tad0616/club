@@ -21,7 +21,7 @@ while (list($stu_name, $stu_email, $stu_grade, $stu_class, $stu_seat_no, $stu_no
 
 function add_user_to_xoops($name = "", $stu_grade = "", $stu_class = "", $email = "", $groupid = "", $user_regdate = "")
 {
-    global $xoopsConfig, $xoopsDB, $xoopsUser, $xoopsModuleConfig;
+    global $xoopsConfig, $xoopsDB, $xoopsUser;
 
     $sql = "select uid from " . $xoopsDB->prefix("users") . " where name='{$name}'";
     $result = $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);

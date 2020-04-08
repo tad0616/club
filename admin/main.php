@@ -32,7 +32,7 @@ $TadDataCenter = new TadDataCenter('club');
 
 function club_officer_setup($club_year = '')
 {
-    global $xoopsDB, $xoopsTpl, $xoopsModuleConfig, $TadDataCenter;
+    global $xoopsDB, $xoopsTpl, $TadDataCenter;
     if (empty($club_year)) {
         $club_year = Tools::get_club_year();
     }

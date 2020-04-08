@@ -112,6 +112,11 @@ switch ($op) {
         Club_choice::no_result_yet($year, $seme);
         break;
 
+    case "import_score":
+        Tools::import_score($club_id);
+        header("location: index.php?club_id=$club_id");
+        exit;
+
     //預設動作
     default:
         $stu_edit_able = Tools::stu_edit_able();

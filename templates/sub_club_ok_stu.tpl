@@ -1,4 +1,20 @@
 <{if 'view_ok'|have_club_power}>
+    <{if 'import'|have_apply_power}>
+        <div class="pull-right">
+            <{if 'download'|have_club_power}>
+                <div style="margin-bottom:4px;">
+                    <a href="<{$xoops_url}>/modules/club/excel_club_stu.php?club_id=<{$club_id}>" class="btn btn-sm btn-primary" data-toggle="tooltip" title="下載「<{$club_title}>」的點名表"><i class="fa fa-users"></i> 下載點名表</a>
+                    <a href="<{$xoops_url}>/modules/club/excel_score_import.php?club_id=<{$club_id}>" class="btn btn-sm btn-warning" data-toggle="tooltip" title="下載「<{$club_title}>」的成績匯入檔"><i class="fa fa-download"></i> 下載成績匯入檔</a>
+                </div>
+            <{/if}>
+
+            <form action="index.php" method="post" class="form-inline"  enctype="multipart/form-data">
+                <input type="file"  name="scorefile" class="form-control" id="scorefile" placeholder="請選擇 xlsx 檔">
+                <input type="hidden" name="club_id" value="<{$club_id}>">
+                <button type="submit" name="op" value="import_score" class="btn btn-info">匯入成績</button>
+            </form>
+        </div>
+    <{/if}>
     <h3 class="club" style="margin:20px auto;">
     <{$club_year}>-<{$club_seme}> <{$club_title}>正取社員一覽
     </h3>

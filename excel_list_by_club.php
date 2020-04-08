@@ -37,7 +37,8 @@ Tools::chk_club_power(__FILE__, __LINE__, 'download');
 
 $clubs = Club_main::get_all($year, $seme, true);
 
-$excel_title = "{$year}-{$seme}社團結果依社團排列";
+$scsModuleConfig = Tools::get_xoopsModuleConfig();
+$excel_title = "{$year}-{$seme}{$scsModuleConfig['school_name']}社團結果依社團排列";
 
 /** Error reporting */
 error_reporting(E_ALL);

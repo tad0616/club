@@ -211,6 +211,7 @@ h3.club {
     border-radius: 8px;
     background: white;
     box-shadow: 0px 0px 6px 1px rgba(37, 37, 37, 0.2);
+    margin:10px auto;
 }
 
 .club_choice {
