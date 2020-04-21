@@ -275,7 +275,7 @@ class Tools
             return false;
         }
         $edit_able = ($now >= $start and $now <= $stop) ? true : false;
-        $xoopsTpl->assign('edit_able', $edit_able);
+        $xoopsTpl->assign('stu_edit_able', $edit_able);
         return $edit_able;
     }
 

@@ -119,7 +119,7 @@ switch ($op) {
 
     //預設動作
     default:
-        $stu_edit_able = Tools::stu_edit_able();
+        Tools::stu_edit_able();
         if ($_SESSION['stu_id']) {
             if (!empty($club_id)) {
                 Club_main::show($club_id);
@@ -130,7 +130,6 @@ switch ($op) {
             }
         } else {
             if (!empty($stu_id)) {
-                $stu_edit_able = Tools::stu_edit_able();
                 Club_choice::index($year, $seme, $stu_id, $mode);
                 $op = 'club_choice_index';
             } elseif (!empty($club_id)) {
