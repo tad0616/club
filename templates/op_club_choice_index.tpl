@@ -28,10 +28,10 @@
                 <div class="club_choice" <{if $choice1.$club_id}>data-toggle="tooltip" title="有<{$choice1.$club_id}>人將之設為第 1 志願"<{/if}>>
                 <span class="choice_sort"><{if $choice.choice_sort}><{$choice.choice_sort}><{else}>?<{/if}></span>
                 <a href="index.php?club_id=<{$choice.club_id}>"><{$choice.club_title}></a>
-                <{if $choice.choice_result=="正取"}>
-                <img src="images/checked.png" alt="<{$choice.choice_result}>">
-                <span style="color: blue;"><{$choice.choice_result}></span>
-                <{if $choice.club_score}> (<span style="color: green;"><{$choice.club_score}>分</span>)<{/if}>
+                <{if $choice.choice_result=="正取" and ($stu_can_see_result=='1' or ($stu_can_see_result=='0' and !$smarty.session.stu_id))}>
+                    <img src="images/checked.png" alt="<{$choice.choice_result}>">
+                    <span style="color: blue;"><{$choice.choice_result}></span>
+                    <{if $choice.club_score}> (<span style="color: green;"><{$choice.club_score}>分</span>)<{/if}>
                 <{/if}>
                 </div>
             </div>

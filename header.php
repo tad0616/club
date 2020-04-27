@@ -17,7 +17,7 @@
  * @version    $Id $
  **/
 
-
 include_once "../../mainfile.php";
+include_once 'preloads/autoloader.php';
 include_once "function.php";
 include_once "interface_menu.php";

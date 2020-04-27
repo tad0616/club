@@ -98,6 +98,11 @@ switch ($op) {
         header("location: index.php?club_id={$club_id}#clubTab2");
         exit;
 
+    case "choice_result_del_ok":
+        Club_choice::set_choice_result($apply_id, $club_id, '');
+        header("location: index.php?club_id={$club_id}#clubTab2");
+        exit;
+
     case "choice_result_all_random":
         Club_choice::choice_result_all_random($year, $seme);
         header("location: index.php");
@@ -146,5 +151,6 @@ switch ($op) {
 /*-----------秀出結果區--------------*/
 $xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu));
 $xoopsTpl->assign('now_op', $op);
+$xoopsTpl->assign('stu_can_see_result', $xoopsModuleConfig['stu_can_see_result']);
 $xoTheme->addStylesheet(XOOPS_URL . '/modules/club/css/module.css');
 require_once XOOPS_ROOT_PATH . '/footer.php';

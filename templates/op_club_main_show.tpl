@@ -19,7 +19,7 @@
 <div class="alert alert-warning">
     <span data-toggle="tooltip" title="正取人數 / 招收人數"><i class="fa fa-users"></i> <{$ok_num}>/<{$club_num}></span>
     <span data-toggle="tooltip" title="上課地點"><i class="fa fa-map-marker"></i> <{$club_place}></span>
-    <span data-toggle="tooltip" title="社團老師"><i class="fa fa-user-circle-o"></i> <{$club_tea_uid_name}></span>
+    <span data-toggle="tooltip" title="授課教師"><i class="fa fa-user-circle-o"></i> <{$club_tea_name}></span>
 </div>
 
 <{if $club_desc}>

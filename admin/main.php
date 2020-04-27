@@ -1,5 +1,5 @@
 <?php
-use XoopsModules\Club\Tools;
+use XoopsModules\Club\Tools as ClubTools;
 use XoopsModules\Scs\Tools as ScsTools;
 use XoopsModules\Tadtools\TadDataCenter;
 use XoopsModules\Tadtools\Utility;
@@ -34,7 +34,7 @@ function club_officer_setup($club_year = '')
 {
     global $xoopsDB, $xoopsTpl, $TadDataCenter;
     if (empty($club_year)) {
-        $club_year = Tools::get_club_year();
+        $club_year = ClubTools::get_club_year();
     }
     $myts = \MyTextSanitizer::getInstance();
     $xoopsTpl->assign('club_year', $club_year);

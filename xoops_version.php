@@ -76,5 +76,15 @@ $modversion['templates'][] = array('file' => 'club_adm_main.tpl', 'description' 
 $modversion['templates'][] = array('file' => 'club_index.tpl', 'description' => 'club_index.tpl');
 $modversion['templates'][] = array('file' => 'club_club.tpl', 'description' => 'club_club.tpl');
 
-//---區塊設定---//
+//---偏好設定---//
 $i = 0;
+
+$i++;
+$modversion['config'][$i] = [
+    'name' => 'stu_can_see_result',
+    'title' => '_MI_CLUB_STU_CAN_SEE_RESULT',
+    'description' => '_MI_CLUB_STU_CAN_SEE_RESULT_DESC',
+    'formtype' => 'yesno',
+    'valuetype' => 'int',
+    'default' => '1',
+];

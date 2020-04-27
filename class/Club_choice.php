@@ -31,7 +31,7 @@ class Club_choice
     //列出所有 club_choice 資料
     public static function index($year, $seme, $stu_id = '', $mode = '')
     {
-        global $xoopsDB, $xoopsTpl;
+        global $xoopsDB, $xoopsTpl, $xoTheme;
         $clubs = Club_main::get_all($year, $seme, true);
         // 社團數
         $club_count = sizeof($clubs);
@@ -99,6 +99,7 @@ class Club_choice
             "{$_SERVER['PHP_SELF']}?op=club_choice_destroy&apply_id=", "apply_id");
 
         $xoopsTpl->assign('action', $_SERVER['PHP_SELF']);
+        Utility::get_jquery(true);
     }
 
     //club_choice編輯表單
@@ -350,9 +351,11 @@ class Club_choice
         global $xoopsDB;
         Tools::chk_apply_power(__FILE__, __LINE__, 'update');
         $get_club_id = self::get_choice_result($apply_id, $val);
-        if (empty($get_club_id)) {
+        if (!empty($val) and empty($get_club_id)) {
             $sql = "update `" . $xoopsDB->prefix("club_choice") . "` set choice_result='$val' where apply_id='{$apply_id}' and club_id='{$club_id}' and choice_result=''";
-            // echo "$sql<br>";
+            $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        } elseif (empty($val)) {
+            $sql = "update `" . $xoopsDB->prefix("club_choice") . "` set choice_result='' where apply_id='{$apply_id}' and club_id='{$club_id}'";
             $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         }
     }

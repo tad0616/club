@@ -17,8 +17,10 @@
  * @version    $Id $
  **/
 
-
 require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
+require_once XOOPS_ROOT_PATH . '/modules/club/preloads/autoloader.php';
+require_once XOOPS_ROOT_PATH . '/modules/scs/preloads/autoloader.php';
+require_once XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';
 
 xoops_loadLanguage('main', $xoopsModule->getVar('dirname'));
 
