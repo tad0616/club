@@ -63,6 +63,14 @@ $styleArray = array(
     ),
 );
 
+$BStyle = array(
+    'borders' => array(
+        'bottom' => array(
+            'style' => PHPExcel_Style_Border::BORDER_THIN,
+        ),
+    ),
+);
+
 $p = 0;
 if ($club_id) {
     club_data($p, $club_id, $club);
@@ -94,7 +102,7 @@ function num2alpha($n)
 
 function club_data($p, $club_id, $club)
 {
-    global $objPHPExcel, $club_date_arr, $styleArray;
+    global $objPHPExcel, $club_date_arr, $styleArray, $BStyle, $year, $seme;
 
     $objPHPExcel->createSheet(); //建立新的工作表，上面那三行再來一次，編號要改
     $objPHPExcel->setActiveSheetIndex($p);
@@ -143,13 +151,16 @@ function club_data($p, $club_id, $club)
             $col = num2alpha($n);
             $objActSheet->setCellValue("{$col}{$i}", '');
         }
-
     }
 
     $objActSheet->getStyle("A1:{$col}{$i}")->applyFromArray($styleArray);
-
     $objActSheet->getStyle("A1:{$col}{$i}")->getAlignment()
         ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER) //垂直置中
         ->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER); //水平置中
+
+    $j = $i + 2;
+
+    $objActSheet->mergeCells("A{$j}:C{$j}")->setCellValue("A{$j}", "任課教師簽名：");
+    $objActSheet->getStyle("D{$j}:F{$j}")->applyFromArray($BStyle);
 
 }
