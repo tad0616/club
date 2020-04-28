@@ -1,23 +1,28 @@
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '管樂團A', '20', '管樂團A教師', '1', '關於管樂團A\n管樂團A介紹\n管樂團A展望\n', '管樂團A教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '籃球裁判社', '20', '籃球裁判社教師', '1', '關於籃球裁判社\n籃球裁判社介紹\n籃球裁判社展望\n', '籃球裁判社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '南科WAWA康輔社', '20', '南科WAWA康輔社教師', '1', '關於南科WAWA康輔社\n南科WAWA康輔社介紹\n南科WAWA康輔社展望\n', '南科WAWA康輔社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '南科你好演辯社', '20', '南科你好演辯社教師', '1', '關於南科你好演辯社\n南科你好演辯社介紹\n南科你好演辯社展望\n', '南科你好演辯社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '吉他社', '20', '吉他社教師', '1', '關於吉他社\n吉他社介紹\n吉他社展望\n', '吉他社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '熱音社', '20', '熱音社教師', '1', '關於熱音社\n熱音社介紹\n熱音社展望\n', '熱音社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '科學研究社', '20', '科學研究社教師', '1', '關於科學研究社\n科學研究社介紹\n科學研究社展望\n', '科學研究社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '排球社', '20', '排球社教師', '1', '關於排球社\n排球社介紹\n排球社展望\n', '排球社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '模擬聯合國社', '20', '模擬聯合國社教師', '1', '關於模擬聯合國社\n模擬聯合國社介紹\n模擬聯合國社展望\n', '模擬聯合國社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '高中遊藝社', '20', '高中遊藝社教師', '1', '關於高中遊藝社\n高中遊藝社介紹\n高中遊藝社展望\n', '高中遊藝社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '桌球社', '20', '桌球社教師', '1', '關於桌球社\n桌球社介紹\n桌球社展望\n', '桌球社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '傳媒社', '20', '傳媒社教師', '1', '關於傳媒社\n傳媒社介紹\n傳媒社展望\n', '傳媒社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '田徑社', '20', '田徑社教師', '1', '關於田徑社\n田徑社介紹\n田徑社展望\n', '田徑社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '合唱團A', '20', '合唱團A教師', '1', '關於合唱團A\n合唱團A介紹\n合唱團A展望\n', '合唱團A教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '合唱團B', '20', '合唱團B教師', '1', '關於合唱團B\n合唱團B介紹\n合唱團B展望\n', '合唱團B教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '流行飲料社', '20', '流行飲料社教師', '1', '關於流行飲料社\n流行飲料社介紹\n流行飲料社展望\n', '流行飲料社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '悅讀行者社', '20', '悅讀行者社教師', '1', '關於悅讀行者社\n悅讀行者社介紹\n悅讀行者社展望\n', '悅讀行者社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '桌遊社', '20', '桌遊社教師', '1', '關於桌遊社\n桌遊社介紹\n桌遊社展望\n', '桌遊社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '浪漫下午茶社', '20', '浪漫下午茶社教師', '1', '關於浪漫下午茶社\n浪漫下午茶社介紹\n浪漫下午茶社展望\n', '浪漫下午茶社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '童軍社', '20', '童軍社教師', '1', '關於童軍社\n童軍社介紹\n童軍社展望\n', '童軍社教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '管樂團B', '20', '管樂團B教師', '1', '關於管樂團B\n管樂團B介紹\n管樂團B展望\n', '管樂團B教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '樂高maker', '20', '樂高maker教師', '1', '關於樂高maker\n樂高maker介紹\n樂高maker展望\n', '樂高maker教室', '' );
-insert into `xx_club_main` ( `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note` ) values( '108', '2', '魔術社', '20', '魔術社教師', '1', '關於魔術社\n魔術社介紹\n魔術社展望\n', '魔術社教室', '' );
+INSERT INTO `xx_club_main` (`club_id`, `club_year`, `club_seme`, `club_title`, `club_num`, `club_tea_name`, `club_tea_uid`, `club_desc`, `club_place`, `club_note`, `club_grade`) VALUES
+(1,	108,	2,	'熱舞社',	'24',	'熱舞社老師',	1,	'<p>我們的熱舞社是由許多不同的舞風所組成，有Hip hop、Girl style、breaking、dancehall、Popping，無論你是舞技高強還是初學者，來到這都能學習到很多的東西，熱舞社是一個可以給喜歡跳舞、想跳舞的人有一個學習、發揮想像的空間，在練舞之餘，社員們也培養了默契與深厚的感情，除了練舞之外平常我們也會舉辦許多活動互相交流及學習更發揚我們熱舞社的熱情，我們不只是一個社團更是一個大家庭，歡迎大家一起加入我們!!!!!!</p>\r\n',	'熱舞社',	'',	'1,2'),
+(2,	108,	2,	'網球社',	'24',	'網球社老師',	1,	'<p class=\"zfr3Q\" id=\"h.p_5xOydIhXtGkj\">網球社為本校歷史悠久社團之一，成立於民國六十三年十一月，以提升校內師生網球運動風氣、增加社員及幹部網球技術水準、凝聚校內愛好網球的人為宗旨。</p>\r\n\r\n<p class=\"zfr3Q\" id=\"h.p_Hva4-a43s9SM\">經過長年的努力，發展出許多其他社團少有的特色，如：</p>\r\n\r\n<ol>\r\n	<li class=\"zfr3Q\" id=\"h.p_VKpXq7q9s9SM\">擁有四面網球場地，其中兩面為少有的人工草皮。</li>\r\n	<li class=\"zfr3Q\" id=\"h.p_ZfzcpFM0s9SM\">有專業網球教練及校隊成員在旁指導社團課程。</li>\r\n	<li class=\"zfr3Q\" id=\"h.p_MaeXh-33s9SM\">社團提供球拍與練習球予社員使用。</li>\r\n</ol>\r\n',	'網球場地',	'',	'1,2'),
+(3,	108,	2,	'羽球社',	'24',	'羽球社老師',	1,	'<p>1.社團宗旨與特色&nbsp;<br />\r\n本社成立之初，主要是秉持著希望所有熱愛羽球活動的同學能夠一起來打羽球，且能共襄盛舉所有的活動以及比賽，藉此機會，彼此互相成長，羽球社的特色，莫不過於本一學期皆會舉辦的全校師生盃羽球賽，由此比賽，不僅可以以球會友，更可增進師長與學生、同學與同學間的關係，如此一來，又可為自己在致理的生活又增添了美好的一頁。<br />\r\n2.未來展望<br />\r\n希望能夠由本校來主辦大型羽球賽之活動，與校外活動互相切磋、比較，同時<br />\r\n也希望能夠舉行社區回饋類似的活動。另外，也是最重要的，希望新生們能夠更踴躍的參與社團活動，如此一來，社團才會如日中天、蒸蒸日上。</p>\r\n',	'羽球場',	'',	'1,2'),
+(4,	108,	2,	'漫研社',	'24',	'漫研社老師',	1,	'<p>漫研社屬於藝術性質的社團，社課時會有專業的老師來教導我們畫漫畫的基本技巧，例如:如何分鏡、人物的骨架如何畫的漂亮。除了平常的課程，幹部們也會利用社課最後的時間給社員帶來一點點的小遊戲，通常是使用團體競賽，得到最多分數的小組可以得到小禮物。每次社課時都會發一本小報，內容是由社員與幹部共同完成的。另外會協助小組員完成一項學期作業—十六頁漫畫。</p>\r\n',	'漫研社教室',	'',	'1,2'),
+(5,	108,	2,	'管樂團A',	'24',	'管樂團A教師',	1,	'關於管樂團A\n管樂團A介紹\n管樂團A展望\n',	'管樂團A教室',	'',	'1,2'),
+(6,	108,	2,	'籃球裁判社',	'24',	'籃球裁判社教師',	1,	'關於籃球裁判社\n籃球裁判社介紹\n籃球裁判社展望\n',	'籃球裁判社教室',	'',	'1,2'),
+(7,	108,	2,	'南科WAWA康輔社',	'24',	'南科WAWA康輔社教師',	1,	'關於南科WAWA康輔社\n南科WAWA康輔社介紹\n南科WAWA康輔社展望\n',	'南科WAWA康輔社教室',	'',	'1,2'),
+(8,	108,	2,	'南科你好演辯社',	'24',	'南科你好演辯社教師',	1,	'關於南科你好演辯社\n南科你好演辯社介紹\n南科你好演辯社展望\n',	'南科你好演辯社教室',	'',	'1,2'),
+(9,	108,	2,	'吉他社',	'24',	'吉他社教師',	1,	'關於吉他社\n吉他社介紹\n吉他社展望\n',	'吉他社教室',	'',	'1,2'),
+(10,	108,	2,	'熱音社',	'24',	'熱音社教師',	1,	'關於熱音社\n熱音社介紹\n熱音社展望\n',	'熱音社教室',	'',	'1,2'),
+(11,	108,	2,	'科學研究社',	'24',	'科學研究社教師',	1,	'關於科學研究社\n科學研究社介紹\n科學研究社展望\n',	'科學研究社教室',	'',	'1,2'),
+(12,	108,	2,	'排球社',	'24',	'排球社教師',	1,	'關於排球社\n排球社介紹\n排球社展望\n',	'排球社教室',	'',	'1,2'),
+(13,	108,	2,	'模擬聯合國社',	'24',	'模擬聯合國社教師',	1,	'關於模擬聯合國社\n模擬聯合國社介紹\n模擬聯合國社展望\n',	'模擬聯合國社教室',	'',	'1,2'),
+(14,	108,	2,	'高中遊藝社',	'24',	'高中遊藝社教師',	1,	'關於高中遊藝社\n高中遊藝社介紹\n高中遊藝社展望\n',	'高中遊藝社教室',	'',	'1,2'),
+(15,	108,	2,	'桌球社',	'24',	'桌球社教師',	1,	'關於桌球社\n桌球社介紹\n桌球社展望\n',	'桌球社教室',	'',	'1,2'),
+(16,	108,	2,	'傳媒社',	'24',	'傳媒社教師',	1,	'關於傳媒社\n傳媒社介紹\n傳媒社展望\n',	'傳媒社教室',	'',	'1,2'),
+(17,	108,	2,	'田徑社',	'24',	'田徑社教師',	1,	'關於田徑社\n田徑社介紹\n田徑社展望\n',	'田徑社教室',	'',	'1,2'),
+(18,	108,	2,	'合唱團A',	'24',	'合唱團A教師',	1,	'關於合唱團A\n合唱團A介紹\n合唱團A展望\n',	'合唱團A教室',	'',	'1,2'),
+(19,	108,	2,	'合唱團B',	'24',	'合唱團B教師',	1,	'關於合唱團B\n合唱團B介紹\n合唱團B展望\n',	'合唱團B教室',	'',	'1,2'),
+(20,	108,	2,	'流行飲料社',	'24',	'流行飲料社教師',	1,	'關於流行飲料社\n流行飲料社介紹\n流行飲料社展望\n',	'流行飲料社教室',	'',	'1,2'),
+(21,	108,	2,	'悅讀行者社',	'24',	'悅讀行者社教師',	1,	'關於悅讀行者社\n悅讀行者社介紹\n悅讀行者社展望\n',	'悅讀行者社教室',	'',	'1,2'),
+(22,	108,	2,	'桌遊社',	'24',	'桌遊社教師',	1,	'關於桌遊社\n桌遊社介紹\n桌遊社展望\n',	'桌遊社教室',	'',	'1,2'),
+(23,	108,	2,	'浪漫下午茶社',	'24',	'浪漫下午茶社教師',	1,	'關於浪漫下午茶社\n浪漫下午茶社介紹\n浪漫下午茶社展望\n',	'浪漫下午茶社教室',	'',	'1,2'),
+(24,	108,	2,	'童軍社',	'24',	'童軍社教師',	1,	'關於童軍社\n童軍社介紹\n童軍社展望\n',	'童軍社教室',	'',	'1,2'),
+(25,	108,	2,	'管樂團B',	'24',	'管樂團B教師',	1,	'關於管樂團B\n管樂團B介紹\n管樂團B展望\n',	'管樂團B教室',	'',	'1,2'),
+(26,	108,	2,	'樂高maker',	'24',	'樂高maker教師',	1,	'關於樂高maker\n樂高maker介紹\n樂高maker展望\n',	'樂高maker教室',	'',	'1,2'),
+(27,	108,	2,	'魔術社',	'24',	'魔術社教師',	1,	'關於魔術社\n魔術社介紹\n魔術社展望\n',	'魔術社教室',	'',	'1,2');

@@ -29,4 +29,6 @@ define('_MI_CLUB_ADM_PAGE_0_DESC', '主管理介面');
 define('_MI_CLUB_PAGE_1', '社團管理');
 
 define('_MI_CLUB_STU_CAN_SEE_RESULT', '學生是否可以看到錄取結果？');
-define('_MI_CLUB_STU_CAN_SEE_RESULT_DESC', '批次亂數錄取後學生是否可以看到自己的正取結果？');
+define('_MI_CLUB_STU_CAN_SEE_RESULT_DESC', '學生登入後是否可以看到自己的正取結果？');
+define('_MI_CLUB_STU_CAN_APPLY_GRADE', '可選填年級');
+define('_MI_CLUB_STU_CAN_APPLY_GRADE_DESC', '可以使用社團選填的年級，用分號隔開即可');

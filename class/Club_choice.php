@@ -32,7 +32,12 @@ class Club_choice
     public static function index($year, $seme, $stu_id = '', $mode = '')
     {
         global $xoopsDB, $xoopsTpl, $xoTheme;
-        $clubs = Club_main::get_all($year, $seme, true);
+        $stu_id = (empty($stu_id) or !empty($_SESSION['stu_id'])) ? $_SESSION['stu_id'] : $stu_id;
+        $stu = Tools::get_stu($stu_id, $year);
+        $apply = Club_apply::get('', $stu_id, $year, $seme);
+
+        $clubs = Club_main::get_all($year, $seme, $stu['stu_grade'], true);
+
         // 社團數
         $club_count = sizeof($clubs);
 
@@ -41,15 +46,11 @@ class Club_choice
         $xoopsTpl->assign('mode', $mode);
         $xoopsTpl->assign('clubs', $clubs);
 
-        $stu_id = (empty($stu_id) or !empty($_SESSION['stu_id'])) ? $_SESSION['stu_id'] : $stu_id;
-
-        $apply = Club_apply::get('', $stu_id, $year, $seme);
         $apply_id = $apply['apply_id'];
         if (empty($apply_id)) {
             if (!empty($_SESSION['stu_id'])) {
                 $apply_id = Club_apply::store($stu_id, $year, $seme);
             } else {
-                $stu = Tools::get_stu($stu_id, $year);
                 $apply_id = Club_apply::store($stu_id, $year, $seme, $stu['stu_name'], $stu['stu_grade'], $stu['stu_class'], $stu['stu_seat_no'], $stu['stu_no']);
 
             }
@@ -63,6 +64,7 @@ class Club_choice
         $myts = \MyTextSanitizer::getInstance();
 
         $choice_arr = self::get($apply_id);
+
         // 已填志願數
         $choice_count = sizeof($choice_arr);
         if ($choice_count != $club_count) {
@@ -74,7 +76,6 @@ class Club_choice
 
             $choice_arr = self::get($apply_id);
         }
-
         $club_choice = [];
         foreach ($choice_arr as $all) {
             //過濾讀出的變數值
@@ -90,7 +91,7 @@ class Club_choice
         }
         $xoopsTpl->assign('club_choice', $club_choice);
 
-        $choice1 = self::get_sort_count($year, $seme, 1);
+        $choice1 = self::get_sort_count($year, $seme, $stu['stu_grade'], 1);
         $xoopsTpl->assign('choice1', $choice1);
 
         //刪除確認的JS
@@ -195,12 +196,14 @@ class Club_choice
     }
 
     //取得各社團被當作第一志願的數量
-    public static function get_sort_count($year, $seme, $sort = 1)
+    public static function get_sort_count($year, $seme, $grade = '', $sort = 1)
     {
         global $xoopsDB;
+        $and_grade = $grade ? "and c.`club_grade` & '$grade'" : '';
         $sql = "select b.club_id, count(*) as n from `" . $xoopsDB->prefix("club_apply") . "` as a
         join `" . $xoopsDB->prefix("club_choice") . "` as b on a.apply_id = b.apply_id
-        where a.apply_year='$year' and a.apply_seme='$seme' and b.choice_sort='$sort'
+        join `" . $xoopsDB->prefix("club_main") . "` as c on b.club_id = c.club_id
+        where a.apply_year='$year' and a.apply_seme='$seme' and b.choice_sort='$sort' $and_grade
         group by b.club_id";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data_arr = [];
@@ -263,10 +266,13 @@ class Club_choice
     // 找出未選填者
     public static function not_chosen_yet($year, $seme, $only_stu_id = false)
     {
-        global $xoopsTpl;
+        global $xoopsTpl, $xoopsModuleConfig;
         $xoopsTpl->assign('year', $year);
         $xoopsTpl->assign('seme', $seme);
-        $stu_id_arr = Tools::get_school_year_stus_id($year);
+        // 可選填年級
+        $stu_can_apply_grade = explode(';', $xoopsModuleConfig['stu_can_apply_grade']);
+
+        $stu_id_arr = Tools::get_school_year_stus_id($year, $stu_can_apply_grade);
         $chosen_stu = self::get_chosen_stu($year, $seme);
         $stu_arr = array_diff($stu_id_arr, $chosen_stu);
         $not_chosen_yet_stu_arr = [];
@@ -301,17 +307,19 @@ class Club_choice
     {
         global $xoopsTpl, $xoopsDB;
 
-        // 找出所有社團
-        $club_arr = self::get_sort_count($year, $seme, 1);
-        asort($club_arr);
-
         if ($apply_id) {
+            $apply = club_apply::get($apply_id);
+            // 找出所有社團
+            $club_arr = self::get_sort_count($year, $seme, $apply['stu_grade'], 1);
+            asort($club_arr);
+
             self::rand_apply($club_arr, $year, $seme, $apply_id);
         } else {
             $stu_arr = self::not_chosen_yet($year, $seme, true);
             foreach ($stu_arr as $stu_id) {
 
                 $apply = Club_apply::get('', $stu_id, $year, $seme);
+
                 $apply_id = $apply['apply_id'];
                 if (empty($apply_id)) {
                     $stu = Tools::get_stu($stu_id, $year);
@@ -320,6 +328,10 @@ class Club_choice
                     $apply = Club_apply::get('', $stu_id, $year, $seme);
                     $apply_id = $apply['apply_id'];
                 }
+
+                // 找出所有社團
+                $club_arr = self::get_sort_count($year, $seme, $apply['stu_grade'], 1);
+                asort($club_arr);
                 self::rand_apply($club_arr, $year, $seme, $apply_id);
             }
         }
@@ -449,7 +461,7 @@ class Club_choice
                 $club_num = $club['club_num'];
 
                 // 找第N志願的人數
-                $choice_num = self::get_sort_count($year, $seme, $i);
+                // $choice_num = self::get_sort_count($year, $seme, '', $i);
 
                 // 先已經錄取的人數
                 $ok_num = self::choice_result_ok($club_id, true);
@@ -470,11 +482,15 @@ class Club_choice
     {
         global $xoopsDB;
         Tools::chk_apply_power(__FILE__, __LINE__, 'update');
+
         // 找出錄取人數
         $club = Club_main::get($club_id);
 
         // 先已經錄取的人數
         $ok_num = self::choice_result_ok($club_id, true);
+
+        // 可選填年級
+        // $club_grade = explode(',', $club['club_grade']);
 
         // 需補齊的人數
         $need_num = $club['club_num'] - $ok_num;

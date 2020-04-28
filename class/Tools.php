@@ -97,11 +97,13 @@ class Tools
     }
 
     //取得某學年度的學生id
-    public static function get_school_year_stus_id($school_year)
+    public static function get_school_year_stus_id($school_year, $grade_arr = [])
     {
         global $xoopsDB;
         $stus = [];
-        $sql = "select `stu_id` from `" . $xoopsDB->prefix("scs_general") . "` where school_year='{$school_year}'";
+        $grade_all = implode(',', $grade_arr);
+        $and_grade = empty($grade_all) ? '' : "and stu_grade in ($grade_all)";
+        $sql = "select `stu_id` from `" . $xoopsDB->prefix("scs_general") . "` where school_year='{$school_year}' $and_grade";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($stu_id) = $xoopsDB->fetchRow($result)) {
             $stus[$stu_id] = $stu_id;

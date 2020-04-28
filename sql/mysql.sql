@@ -46,5 +46,6 @@ CREATE TABLE `club_main` (
   `club_desc` text COMMENT '課程說明',
   `club_place` varchar(255) default '' COMMENT '上課地點',
   `club_note` text COMMENT '備註',
+  `club_grade` set('1','2','3') NOT NULL DEFAULT '1,2',
 PRIMARY KEY  (`club_id`)
 ) ENGINE=MyISAM;

@@ -53,7 +53,7 @@
             <{$smarty.const._MD_CLUB_CLUB_NUM}>
         </label>
         <div class="col-sm-4">
-            <input type="text" name="club_num" id="club_num" class="form-control " value="<{$club_num}>" placeholder="<{$smarty.const._MD_CLUB_CLUB_NUM}>">
+            <input type="text" name="club_num" id="club_num" class="form-control validate[required]" value="<{$club_num}>" placeholder="<{$smarty.const._MD_CLUB_CLUB_NUM}>">
         </div>
 
         <!--地點-->
@@ -64,6 +64,24 @@
             <input type="text" name="club_place" id="club_place" class="form-control " value="<{$club_place}>" placeholder="<{$smarty.const._MD_CLUB_CLUB_PLACE}>">
         </div>
     </div>
+
+    <!--開放選填年級-->
+    <div class="form-group row">
+        <label class="col-sm-2 control-label col-form-label text-md-right">
+            <{$smarty.const._MD_CLUB_CLUB_GRADE}>
+        </label>
+        <div class="col-sm-10">
+            <{foreach from=$stu_can_apply_grade item=grade}>
+                <div class="form-check form-check-inline checkbox-inline">
+                    <label class="form-check-label" for="club_grade_<{$grade}>">
+                        <input class="form-check-input validate[required]" type="checkbox" name="club_grade[]" id="club_grade_<{$grade}>" value="<{$grade}>" <{if $grade|in_array:$club_grade}>checked<{/if}>> 國中 <{$grade}> 年級
+                    </label>
+                </div>
+            <{/foreach}>
+        </div>
+
+    </div>
+
 
 
     <!--課程說明-->

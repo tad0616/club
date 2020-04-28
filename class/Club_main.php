@@ -34,10 +34,10 @@ class Club_main
     //列出所有 club_main 資料
     public static function index($year, $seme)
     {
-        global $xoopsDB, $xoopsTpl;
+        global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
 
         // 找出各社團被當作第一志願的人數
-        $choice1 = Club_choice::get_sort_count($year, $seme, 1);
+        $choice1 = Club_choice::get_sort_count($year, $seme,'', 1);
         $xoopsTpl->assign('choice1', $choice1);
 
         // 找出各社團被正取人數
@@ -50,7 +50,10 @@ class Club_main
         $xoopsTpl->assign('seme', $seme);
 
         // 找出所有學生人數
-        $stu_id_arr = Tools::get_school_year_stus_id($year);
+        // 可選填年級
+        $stu_can_apply_grade_arr = explode(';', $xoopsModuleConfig['stu_can_apply_grade']);
+        $xoopsTpl->assign('stu_can_apply_grade_txt', implode('、', $stu_can_apply_grade_arr));
+        $stu_id_arr = Tools::get_school_year_stus_id($year, $stu_can_apply_grade_arr);
         $stu_count = sizeof($stu_id_arr);
         $xoopsTpl->assign('stu_count', $stu_count);
 
@@ -67,7 +70,7 @@ class Club_main
         $not_chosen_yet_count = $stu_count - $chosen_count;
         $xoopsTpl->assign('not_chosen_yet_count', $not_chosen_yet_count);
 
-        $clubs = self::get_all($year, $seme, ture);
+        $clubs = self::get_all($year, $seme, '', true);
         //刪除確認的JS
         $SweetAlert = new SweetAlert();
         $SweetAlert->render('club_main_destroy_func',
@@ -80,7 +83,7 @@ class Club_main
     //club_main編輯表單
     public static function create($club_id = '')
     {
-        global $xoopsDB, $xoopsTpl, $xoopsUser;
+        global $xoopsDB, $xoopsTpl, $xoopsUser, $xoopsModuleConfig;
         Tools::chk_club_power(__FILE__, __LINE__, 'create');
 
         //抓取預設值
@@ -121,6 +124,9 @@ class Club_main
         //設定 club_note 欄位的預設值
         $club_note = !isset($DBV['club_note']) ? '' : $DBV['club_note'];
         $xoopsTpl->assign('club_note', $club_note);
+        //設定 club_grade 欄位的預設值
+        $club_grade = !isset($DBV['club_grade']) ? [] : explode(',', $DBV['club_grade']);
+        $xoopsTpl->assign('club_grade', $club_grade);
 
         $op = empty($club_id) ? "club_main_store" : "club_main_update";
 
@@ -143,6 +149,8 @@ class Club_main
         $xoopsTpl->assign("token_form", $token_form);
         $xoopsTpl->assign('action', $_SERVER["PHP_SELF"]);
         $xoopsTpl->assign('next_op', $op);
+
+        $xoopsTpl->assign('stu_can_apply_grade', explode(';', $xoopsModuleConfig['stu_can_apply_grade']));
     }
 
     //新增資料到club_main中
@@ -168,6 +176,7 @@ class Club_main
         $club_desc = $myts->addSlashes($_POST['club_desc']);
         $club_place = $myts->addSlashes($_POST['club_place']);
         $club_note = $myts->addSlashes($_POST['club_note']);
+        $club_grade = implode(',', $_POST['club_grade']);
 
         $sql = "insert into `" . $xoopsDB->prefix("club_main") . "` (
         `club_year`,
@@ -178,7 +187,8 @@ class Club_main
         `club_tea_uid`,
         `club_desc`,
         `club_place`,
-        `club_note`
+        `club_note`,
+        `club_grade`
         ) values(
         '{$club_year}',
         '{$club_seme}',
@@ -188,7 +198,8 @@ class Club_main
         '{$club_tea_uid}',
         '{$club_desc}',
         '{$club_place}',
-        '{$club_note}'
+        '{$club_note}',
+        '{$club_grade}'
         )";
         $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -232,6 +243,8 @@ class Club_main
         $all['club_desc'] = $myts->displayTarea($all['club_desc'], 1, 1, 0, 1, 0);
         $all['club_place'] = $myts->htmlSpecialChars($all['club_place']);
         $all['club_note'] = $myts->displayTarea($all['club_note'], 0, 1, 0, 1, 1);
+        $all['club_grade'] = explode(',', $all['club_grade']);
+        $all['club_grade_txt'] = implode('、', $all['club_grade']);
 
         //以下會產生這些變數： $club_year, $club_seme, $club_title, $club_num, $club_tea_name, $club_tea_uid, $club_desc, $club_place, $club_note
         foreach ($all as $k => $v) {
@@ -280,6 +293,7 @@ class Club_main
         $club_desc = $myts->addSlashes($_POST['club_desc']);
         $club_place = $myts->addSlashes($_POST['club_place']);
         $club_note = $myts->addSlashes($_POST['club_note']);
+        $club_grade = implode(',', $_POST['club_grade']);
 
         $sql = "update `" . $xoopsDB->prefix("club_main") . "` set
         `club_year` = '{$club_year}',
@@ -290,7 +304,8 @@ class Club_main
         `club_tea_uid` = '{$club_tea_uid}',
         `club_desc` = '{$club_desc}',
         `club_place` = '{$club_place}',
-        `club_note` = '{$club_note}'
+        `club_note` = '{$club_note}',
+        `club_grade` = '{$club_grade}'
         where `club_id` = '$club_id'";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
@@ -330,10 +345,11 @@ class Club_main
     }
 
     //取得club_main所有資料陣列
-    public static function get_all($club_year = '', $club_seme = '', $filter = false)
+    public static function get_all($club_year = '', $club_seme = '', $grade = '', $filter = false)
     {
         global $xoopsDB;
-        $sql = "select * from `" . $xoopsDB->prefix("club_main") . "` where club_year='$club_year' and club_seme='$club_seme'";
+        $and_grade = $grade ? "and `club_grade` & '$grade'" : '';
+        $sql = "select * from `" . $xoopsDB->prefix("club_main") . "` where club_year='$club_year' and club_seme='$club_seme' $and_grade";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data_arr = [];
         $myts = \MyTextSanitizer::getInstance();
@@ -349,6 +365,8 @@ class Club_main
                 $all['club_desc'] = $myts->displayTarea($all['club_desc'], 1, 1, 0, 1, 0);
                 $all['club_place'] = $myts->htmlSpecialChars($all['club_place']);
                 $all['club_note'] = $myts->displayTarea($all['club_note'], 0, 1, 0, 1, 1);
+                $all['club_grade'] = explode(',', $all['club_grade']);
+                $all['club_grade_txt'] = implode('、', $all['club_grade']);
             }
             $club_id = $all['club_id'];
             $data_arr[$club_id] = $all;
@@ -357,11 +375,11 @@ class Club_main
     }
 
     //取得某學年度的社團id
-    public static function get_clubs($year, $seme)
+    public static function get_clubs($year, $seme, $grade)
     {
         global $xoopsDB;
         $club_arr = [];
-        $sql = "select club_id from `" . $xoopsDB->prefix("club_main") . "` where club_year='$year' and club_seme='$seme' order by rand()";
+        $sql = "select club_id from `" . $xoopsDB->prefix("club_main") . "` where `club_year`='$year' and `club_seme`='$seme' and `club_grade` & '$grade' order by rand()";
         $club_arr = [];
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($club_id) = $xoopsDB->fetchRow($result)) {

@@ -1,5 +1,5 @@
 <{if $clubs}>
-    <h2 class="club"><{$apply.stu_name}>的社團志願選填</h2>
+    <h2 class="club"><{$apply.stu_grade}>年<{$apply.stu_class}>班<{$apply.stu_name}>的社團志願選填</h2>
     <{if $stu_edit_able}>
         <div id="club_choice_save_msg">
             <div class="alert alert-info">

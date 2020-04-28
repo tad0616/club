@@ -88,3 +88,13 @@ $modversion['config'][$i] = [
     'valuetype' => 'int',
     'default' => '1',
 ];
+
+$i++;
+$modversion['config'][$i] = [
+    'name' => 'stu_can_apply_grade',
+    'title' => '_MI_CLUB_STU_CAN_APPLY_GRADE',
+    'description' => '_MI_CLUB_STU_CAN_APPLY_GRADE_DESC',
+    'formtype' => 'textbox',
+    'valuetype' => 'text',
+    'default' => '1;2',
+];

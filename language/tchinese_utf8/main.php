@@ -36,4 +36,5 @@ define('_MD_CLUB_CLUB_TEA_UID', '教師uid');
 define('_MD_CLUB_CLUB_DESC', '課程說明');
 define('_MD_CLUB_CLUB_PLACE', '地點');
 define('_MD_CLUB_CLUB_NOTE', '備註');
+define('_MD_CLUB_CLUB_GRADE', '開放選填年級');
 define('_MD_CLUB_SHOW_CLUB_ID_FILES', '');

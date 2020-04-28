@@ -44,7 +44,7 @@ if ($club_id) {
     $club = Club_main::get($club_id);
     $excel_title = "{$year}-{$seme}{$scsModuleConfig['school_name']}「{$club['club_title']}」社團點名表";
 } else {
-    $clubs = Club_main::get_all($year, $seme, true);
+    $clubs = Club_main::get_all($year, $seme, '', true);
     $excel_title = "{$year}-{$seme}{$scsModuleConfig['school_name']}社團點名表";
 }
 

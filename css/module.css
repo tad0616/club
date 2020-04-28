@@ -30,11 +30,6 @@ table.line td.z {
     padding: 0px;
 }
 
-a.disabled {
-    pointer-events: none;
-    filter: grayscale(90%) opacity(.2);
-}
-
 .z table {
     width: 100%;
 }
@@ -211,7 +206,7 @@ h3.club {
     border-radius: 8px;
     background: white;
     box-shadow: 0px 0px 6px 1px rgba(37, 37, 37, 0.2);
-    margin:10px auto;
+    margin: 10px auto;
 }
 
 .club_choice {
@@ -221,7 +216,7 @@ h3.club {
     padding: 10px;
     margin: 10px auto;
     font-family: jf-openhuninn, Mamelon;
-    border:1px solid rgb(66, 145, 190);
+    border: 1px solid rgb(66, 145, 190);
     box-shadow: 0px 0px 6px 1px rgba(37, 37, 37, 0.2);
 }
 
@@ -239,4 +234,11 @@ h3.club {
     background-color: rgb(240, 247, 246);
     border-radius: 50%;
     display: inline-block;
+}
+
+.c {
+    text-align: center;
+}
+.no {
+    white-space: nowrap;
 }

@@ -1,14 +1,14 @@
-<div class="pull-right bar">
+<div class="pull-right">
     <{if 'destroy'|have_club_power and !$stu_arr}>
-        <a href="javascript:club_main_destroy_func(<{$club_id}>);" class="btn btn-danger">刪除<{$club_title}></a>
+        <a href="javascript:club_main_destroy_func(<{$club_id}>);" class="btn btn-sm btn-xs btn-danger"><i class="fa fa-times" aria-hidden="true"></i> 刪除<{$club_title}></a>
     <{/if}>
     <{if 'update'|have_club_power}>
-        <a href="<{$xoops_url}>/modules/club/index.php?op=club_main_edit&club_id=<{$club_id}>" class="btn btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 編輯<{$club_title}></a>
+        <a href="<{$xoops_url}>/modules/club/index.php?op=club_main_edit&club_id=<{$club_id}>" class="btn  btn-sm btn-xs btn-warning"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 編輯<{$club_title}></a>
     <{/if}>
     <{if 'create'|have_club_power}>
-        <a href="<{$xoops_url}>/modules/club/index.php?op=club_main_create" class="btn btn-info"><i class="fa fa-plus"></i> 新增社團</a>
+        <a href="<{$xoops_url}>/modules/club/index.php?op=club_main_create" class="btn btn-sm btn-xs btn-info"><i class="fa fa-plus"></i> 新增社團</a>
     <{/if}>
-    <a href="<{$xoops_url}>/modules/club/" class="btn btn-success"><i class="fa fa-undo" aria-hidden="true"></i> 回社團一覽</a>
+    <a href="<{$xoops_url}>/modules/club/" class="btn btn-sm btn-xs btn-success"><i class="fa fa-undo" aria-hidden="true"></i> 回社團一覽</a>
 </div>
 
 
@@ -20,6 +20,7 @@
     <span data-toggle="tooltip" title="正取人數 / 招收人數"><i class="fa fa-users"></i> <{$ok_num}>/<{$club_num}></span>
     <span data-toggle="tooltip" title="上課地點"><i class="fa fa-map-marker"></i> <{$club_place}></span>
     <span data-toggle="tooltip" title="授課教師"><i class="fa fa-user-circle-o"></i> <{$club_tea_name}></span>
+    <span data-toggle="tooltip" title="可報名年級"><i class="fa fa-street-view"></i> <{foreach from=$club_grade item=grade}><{$grade}>年級 <{/foreach}></span>
 </div>
 
 <{if $club_desc}>
