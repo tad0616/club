@@ -267,7 +267,8 @@ class Tools
         global $xoopsTpl;
         $TadDataCenter = new TadDataCenter('club');
         $club_year = self::get_club_year();
-        $TadDataCenter->set_col('club_setup', $club_year);
+        $club_seme = self::get_club_seme();
+        $TadDataCenter->set_col('club_setup', "{$club_year}-{$club_seme}");
         $setup = $TadDataCenter->getData();
         $xoopsTpl->assign('setup', $setup);
         $now = time();

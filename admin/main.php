@@ -30,7 +30,7 @@ $TadDataCenter = new TadDataCenter('club');
 
 /*-----------功能函數區----------*/
 
-function club_officer_setup($club_year = '')
+function club_officer_setup($club_year = '', $club_seme = '')
 {
     global $xoopsDB, $xoopsTpl, $TadDataCenter;
     if (empty($club_year)) {
@@ -38,11 +38,13 @@ function club_officer_setup($club_year = '')
     }
     $myts = \MyTextSanitizer::getInstance();
     $xoopsTpl->assign('club_year', $club_year);
+    $xoopsTpl->assign('club_seme', $club_seme);
+
     $teachers = ScsTools::get_school_teachers();
     $xoopsTpl->assign('teachers', $teachers);
     Utility::get_jquery(true);
 
-    $TadDataCenter->set_col('club_setup', $club_year);
+    $TadDataCenter->set_col('club_setup', "{$club_year}-{$club_seme}");
     $data = $TadDataCenter->getData();
     $xoopsTpl->assign('setup', $data);
 
@@ -51,10 +53,10 @@ function club_officer_setup($club_year = '')
 }
 
 // 儲存設定
-function save_club_officer($club_year, $club)
+function save_club_officer($club_year, $club_seme, $club)
 {
     global $TadDataCenter;
-    $TadDataCenter->set_col('club_setup', $club_year);
+    $TadDataCenter->set_col('club_setup', "{$club_year}-{$club_seme}");
     $data_arr = [];
     foreach ($club as $class => $val) {
         if (is_array($val)) {
@@ -93,19 +95,20 @@ function save_club_officer($club_year, $club)
 /*-----------變數過濾----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
 $op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$club_year = system_CleanVars($_REQUEST, 'club_year', '', 'int');
+$club_ys = system_CleanVars($_REQUEST, 'club_ys', ClubTools::get_club_year() . '-' . ClubTools::get_club_seme(), 'string');
+list($club_year, $club_seme) = explode('-', $club_ys);
 $club = system_CleanVars($_REQUEST, 'club', '', 'array');
 
 /*-----------執行動作判斷區----------*/
 switch ($op) {
     case 'save_club_officer':
-        save_club_officer($club_year, $club);
+        save_club_officer($club_year, $club_seme, $club);
         redirect_header($_SERVER['PHP_SELF'], 3, '儲存完成');
         break;
 
     default:
         $op = 'club_officer_setup';
-        club_officer_setup($club_year);
+        club_officer_setup($club_year, $club_seme);
         break;
 }
 

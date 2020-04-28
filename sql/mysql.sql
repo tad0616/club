@@ -26,7 +26,7 @@ PRIMARY KEY  (`apply_id`,`club_id`,`choice_sort`)
 CREATE TABLE `club_data_center` (
   `mid` mediumint(9) unsigned NOT NULL AUTO_INCREMENT COMMENT '模組編號',
   `col_name` varchar(100) NOT NULL default '' COMMENT '欄位名稱',
-  `col_sn` mediumint(9) unsigned NOT NULL default 0 COMMENT '欄位編號',
+  `col_sn` varchar(100) NOT NULL default '' COMMENT '欄位編號',
   `data_name` varchar(100) NOT NULL default '' COMMENT '資料名稱',
   `data_value` text NOT NULL COMMENT '儲存值',
   `data_sort` mediumint(9) unsigned NOT NULL default 0 COMMENT '排序',

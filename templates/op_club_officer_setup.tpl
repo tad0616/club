@@ -1,25 +1,31 @@
 <h2 class="club">
-<form class="form-inline">
-    <div class="form-group">
-        <select name="club_year" id="club_year" class="form-control" onchange="location.href='main.php?club_year='+this.value">
-        <option value="">選年度</option>
-        <{if $club_year_arr}>
-            <{foreach from=$club_year_arr item=year}>
-                <option value="<{$year}>" <{if $club_year==$year}>selected<{/if}>><{$year}>學年度</option>
-            <{/foreach}>
-        <{else}>
-            <option value="<{$club_year}>"><{$club_year}></option>
-        <{/if}>
-        </select>
-    </div>
-    <div class="form-group">
-    設定
-    </div>
-</form>
+    <form class="form-inline">
+        <div class="form-group">
+            <select name="club_ys" id="club_ys" class="form-control" onchange="location.href='main.php?club_ys='+this.value">
+                <option value="">選學年學期</option>
+                <{if $club_year_arr}>
+                    <{foreach from=$club_year_arr item=year}>
+                        <option value="<{$year}>-1" <{if $club_year == $year and $club_seme == 1}>selected<{/if}>><{$year}>學年度第 1 學期</option>
+                        <option value="<{$year}>-2" <{if $club_year == $year and $club_seme == 2}>selected<{/if}>><{$year}>學年度第 2 學期</option>
+                    <{/foreach}>
+                    <option value="<{$year+1}>-1" <{if $club_year == $year+1 and $club_seme == 1}>selected<{/if}>><{$year+1}>學年度第 1 學期</option>
+                    <option value="<{$year+1}>-2" <{if $club_year == $year+1 and $club_seme == 2}>selected<{/if}>><{$year+1}>學年度第 2 學期</option>
+                <{else}>
+                    <option value="<{$club_year}>-1" <{if $club_seme == 1}>selected<{/if}>><{$year}>學年度第 1 學期</option>
+                    <option value="<{$club_year}>-2" <{if $club_seme == 2}>selected<{/if}>><{$year}>學年度第 2 學期</option>
+                <{/if}>
+            </select>
+        </div>
+        <div class="form-group">
+            設定
+        </div>
+    </form>
 </h2>
+
 <div class="alert alert-info">
-只有老師利用OpenID登入過本站後，其姓名才會出現在下方選單中。
+    只有老師利用OpenID登入過本站後，其姓名才會出現在下方選單中。
 </div>
+
 <script type="text/javascript" src="<{$xoops_url}>/modules/tadtools/My97DatePicker/WdatePicker.js"></script>
 <form action="<{$smarty.server.PHP_SELF}>" method="post" id="myForm" class="form-horizontal">
 
@@ -75,7 +81,7 @@
 
 
     <div class="text-center">
-        <input type="hidden" name="club_year" value="<{$club_year}>">
+        <input type="hidden" name="club_ys" value="<{$club_year}>-<{$club_seme}>">
         <input type="hidden" name="op" value="save_club_officer">
         <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>
     </div>

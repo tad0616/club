@@ -35,7 +35,7 @@ $club_id = system_CleanVars($_REQUEST, 'club_id', 0, 'int');
 Tools::chk_club_power(__FILE__, __LINE__, 'download');
 
 $TadDataCenter = new TadDataCenter('club');
-$TadDataCenter->set_col('club_setup', $year);
+$TadDataCenter->set_col('club_setup', "{$year}-{$seme}");
 $setup = $TadDataCenter->getData();
 $club_date_arr = explode(';', $setup['club_date'][0]);
 $scsModuleConfig = Tools::get_xoopsModuleConfig();
