@@ -71,7 +71,7 @@
 
     <div class="form-group row custom-gutter">
         <label class="col-sm-2 col-form-label text-sm-right control-label">
-            <{$club_year}>學年社團上課日期<br>製作點名簿用<br>請用「;」隔開，如範例
+            <{$club_year}>學年社團上課日期<br>製作點名簿的日期列用<br>請用「;」隔開，如範例
         </label>
         <div class="col-sm-10">
             <input type="text" name="club[club_date]" id="club_date" class="form-control" value="<{$setup.club_date.0}>" placeholder="3/9 (6);3/9 (7);3/16 (6);3/16 (7);3/23 (6);3/23 (7);3/30 (6);3/30 (7);4/13 (6);4/13 (7);4/20 (6);4/20 (7);6/8 (6);6/8 (7);6/22 (6);6/22 (7)
@@ -79,8 +79,35 @@
         </div>
     </div>
 
+    <{if $clubs}>
+        <div class="alert alert-success">
+            <{$club_year}>學年第<{$club_seme}>學期已有 <{$clubs|@sizeof}> 個社團
+        </div>
+    <{else}>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="alert alert-danger" role="alert">
+                    <{$club_year}>學年第<{$club_seme}>學期尚無社團資料
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="input-group">
+                    <select name="copy_from_ys" class="form-control">
+                        <option value="">不複製社團資料</option>
+                        <{foreach from=$club_ys_arr key=ys item=count}>
+                            <option value="<{$ys}>">複製 <{$ys}> 的社團資料（共<{$count}>個）</option>
+                        <{/foreach}>
+                    </select>
+                    <div class="input-group-append input-group-addon">
+                        <span class="input-group-text">到<{$club_year}>學年第<{$club_seme}>學期</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <{/if}>
 
-    <div class="text-center">
+
+    <div class="text-center" style="margin:30px auto;">
         <input type="hidden" name="club_ys" value="<{$club_year}>-<{$club_seme}>">
         <input type="hidden" name="op" value="save_club_officer">
         <button type="submit" class="btn btn-primary"><{$smarty.const._TAD_SAVE}></button>

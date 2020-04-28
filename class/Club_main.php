@@ -37,7 +37,7 @@ class Club_main
         global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
 
         // 找出各社團被當作第一志願的人數
-        $choice1 = Club_choice::get_sort_count($year, $seme,'', 1);
+        $choice1 = Club_choice::get_sort_count($year, $seme, '', 1);
         $xoopsTpl->assign('choice1', $choice1);
 
         // 找出各社團被正取人數
@@ -154,29 +154,33 @@ class Club_main
     }
 
     //新增資料到club_main中
-    public static function store()
+    public static function store($club = [])
     {
         global $xoopsDB, $xoopsUser;
         Tools::chk_club_power(__FILE__, __LINE__, 'store');
 
-        //XOOPS表單安全檢查
-        Utility::xoops_security_check();
-
         $myts = \MyTextSanitizer::getInstance();
+        if (!empty($club)) {
+            foreach ($club as $k => $v) {
+                $$k = $myts->addSlashes($v);
+            }
+        } else {
+            //XOOPS表單安全檢查
+            Utility::xoops_security_check();
 
-        $club_id = (int) $_POST['club_id'];
-        $club_year = (int) $_POST['club_year'];
-        $club_seme = (int) $_POST['club_seme'];
-        $club_title = $myts->addSlashes($_POST['club_title']);
-        $club_num = $myts->addSlashes($_POST['club_num']);
-        $club_tea_name = $myts->addSlashes($_POST['club_tea_name']);
-        //取得使用者編號
-        $club_tea_uid = ($xoopsUser) ? $xoopsUser->uid() : 0;
-        $club_tea_uid = !empty($_POST['club_tea_uid']) ? (int) $_POST['club_tea_uid'] : $club_tea_uid;
-        $club_desc = $myts->addSlashes($_POST['club_desc']);
-        $club_place = $myts->addSlashes($_POST['club_place']);
-        $club_note = $myts->addSlashes($_POST['club_note']);
-        $club_grade = implode(',', $_POST['club_grade']);
+            $club_year = (int) $_POST['club_year'];
+            $club_seme = (int) $_POST['club_seme'];
+            $club_title = $myts->addSlashes($_POST['club_title']);
+            $club_num = $myts->addSlashes($_POST['club_num']);
+            $club_tea_name = $myts->addSlashes($_POST['club_tea_name']);
+            //取得使用者編號
+            $club_tea_uid = ($xoopsUser) ? $xoopsUser->uid() : 0;
+            $club_tea_uid = !empty($_POST['club_tea_uid']) ? (int) $_POST['club_tea_uid'] : $club_tea_uid;
+            $club_desc = $myts->addSlashes($_POST['club_desc']);
+            $club_place = $myts->addSlashes($_POST['club_place']);
+            $club_note = $myts->addSlashes($_POST['club_note']);
+            $club_grade = implode(',', $_POST['club_grade']);
+        }
 
         $sql = "insert into `" . $xoopsDB->prefix("club_main") . "` (
         `club_year`,
@@ -201,7 +205,7 @@ class Club_main
         '{$club_note}',
         '{$club_grade}'
         )";
-        $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
 
         //取得最後新增資料的流水編號
         $club_id = $xoopsDB->getInsertId();
@@ -386,5 +390,20 @@ class Club_main
             $club_arr[$club_id] = $club_id;
         }
         return $club_arr;
+    }
+
+    //取得有社團資料的學年學期
+    public static function get_clubs_ys()
+    {
+        global $xoopsDB;
+        $club_arr = [];
+        $sql = "select club_year,club_seme,count(*) from `" . $xoopsDB->prefix("club_main") . "` group by `club_year`, `club_seme`";
+        $ys_arr = [];
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        while (list($club_year, $club_seme, $count) = $xoopsDB->fetchRow($result)) {
+            $key = "{$club_year}-{$club_seme}";
+            $ys_arr[$key] = $count;
+        }
+        return $ys_arr;
     }
 }

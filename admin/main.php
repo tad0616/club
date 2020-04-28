@@ -1,4 +1,5 @@
 <?php
+use XoopsModules\Club\Club_main;
 use XoopsModules\Club\Tools as ClubTools;
 use XoopsModules\Scs\Tools as ScsTools;
 use XoopsModules\Tadtools\TadDataCenter;
@@ -50,10 +51,17 @@ function club_officer_setup($club_year = '', $club_seme = '')
 
     $club_year_arr = ScsTools::get_general_data_arr('scs_general', 'school_year');
     $xoopsTpl->assign('club_year_arr', $club_year_arr);
+
+    $clubs = Club_main::get_all($club_year, $club_seme, '', true);
+    $xoopsTpl->assign('clubs', $clubs);
+
+    $club_ys_arr = Club_main::get_clubs_ys();
+    $xoopsTpl->assign('club_ys_arr', $club_ys_arr);
+
 }
 
 // 儲存設定
-function save_club_officer($club_year, $club_seme, $club)
+function save_club_officer($club_year, $club_seme, $club, $copy_from_ys = '')
 {
     global $TadDataCenter;
     $TadDataCenter->set_col('club_setup', "{$club_year}-{$club_seme}");
@@ -91,6 +99,18 @@ function save_club_officer($club_year, $club_seme, $club)
         }
     }
     $TadDataCenter->saveCustomData($data_arr);
+
+    if (!empty($copy_from_ys)) {
+        list($year, $seme) = explode('-', $copy_from_ys);
+        $old_club = Club_main::get_all($year, $seme);
+        foreach ($old_club as $club) {
+            $club['club_year'] = $club_year;
+            $club['club_seme'] = $club_seme;
+            Club_main::store($club);
+        }
+    }
+
+    return "{$club_year}-{$club_seme}";
 }
 /*-----------變數過濾----------*/
 include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
@@ -98,12 +118,13 @@ $op = system_CleanVars($_REQUEST, 'op', '', 'string');
 $club_ys = system_CleanVars($_REQUEST, 'club_ys', ClubTools::get_club_year() . '-' . ClubTools::get_club_seme(), 'string');
 list($club_year, $club_seme) = explode('-', $club_ys);
 $club = system_CleanVars($_REQUEST, 'club', '', 'array');
+$copy_from_ys = system_CleanVars($_REQUEST, 'copy_from_ys', '', 'string');
 
 /*-----------執行動作判斷區----------*/
 switch ($op) {
     case 'save_club_officer':
-        save_club_officer($club_year, $club_seme, $club);
-        redirect_header($_SERVER['PHP_SELF'], 3, '儲存完成');
+        $club_ys = save_club_officer($club_year, $club_seme, $club, $copy_from_ys);
+        redirect_header($_SERVER['PHP_SELF'] . "?club_ys={$club_ys}", 3, '儲存完成');
         break;
 
     default:
