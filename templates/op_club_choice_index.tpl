@@ -3,8 +3,13 @@
     <{if $stu_edit_able}>
         <div id="club_choice_save_msg">
             <div class="alert alert-info">
-            1.請直接按住社團名稱，拉動排序，進行志願序調整<br>
-            2.選填時間為 <{$setup.stu_start_sign.0}> 至 <{$setup.stu_stop_sign.0}> 止
+                <ol>
+                    <li>請直接按住社團名稱，拉動排序，進行志願序調整</li>
+                    <li>左邊若為 <span class="choice_sort">?</span> 表示尚未進行志願排序</li>
+                    <li>左邊若有數字，如： <span class="choice_sort">1</span> 表示該社團是您的第 1 志願</li>
+                    <li>右邊數字，如：<span class="badge badge-success badge-pill">12</span>，表示有 12 個人將該社團設為第一志願</li>
+                    <li>選填時間為 <{$setup.stu_start_sign.0}> 至 <{$setup.stu_stop_sign.0}> 止</li>
+                </ol>
             </div>
         </div>
     <{else}>
@@ -25,14 +30,17 @@
     <div class="row" id="club_choice_sort">
         <{foreach from=$club_choice key=club_id item=choice}>
             <div class="col-sm-4" id="sort_<{$club_id}>">
-                <div class="club_choice" <{if $choice1.$club_id}>data-toggle="tooltip" title="有<{$choice1.$club_id}>人將之設為第 1 志願"<{/if}>>
-                <span class="choice_sort"><{if $choice.choice_sort}><{$choice.choice_sort}><{else}>?<{/if}></span>
-                <a href="index.php?club_id=<{$choice.club_id}>"><{$choice.club_title}></a>
-                <{if $choice.choice_result=="正取" and ($stu_can_see_result=='1' or ($stu_can_see_result=='0' and !$smarty.session.stu_id))}>
-                    <img src="images/checked.png" alt="<{$choice.choice_result}>">
-                    <span style="color: blue;"><{$choice.choice_result}></span>
-                    <{if $choice.club_score}> (<span style="color: green;"><{$choice.club_score}>分</span>)<{/if}>
-                <{/if}>
+                <div class="club_choice" style="overflow: hidden; height: 2.6em; white-space: nowrap;" <{if $choice1.$club_id}>data-toggle="tooltip" title="已有<{$choice1.$club_id}>人將之設為第一志願"<{/if}>>
+                    <span class="choice_sort"><{if $choice.choice_sort}><{$choice.choice_sort}><{else}>?<{/if}></span>
+                    <a href="index.php?club_id=<{$choice.club_id}>"><{$choice.club_title}></a>
+                    <{if $choice1.$club_id}>
+                        <span class="badge badge-success badge-pill"><{$choice1.$club_id}></span>
+                    <{/if}>
+                    <{if $choice.choice_result=="正取" and ($stu_can_see_result=='1' or ($stu_can_see_result=='0' and !$smarty.session.stu_id))}>
+                        <img src="images/checked.png" alt="<{$choice.choice_result}>">
+                        <span style="color: blue;"><{$choice.choice_result}></span>
+                        <{if $choice.club_score}> (<span style="color: green;"><{$choice.club_score}>分</span>)<{/if}>
+                    <{/if}>
                 </div>
             </div>
         <{/foreach}>
