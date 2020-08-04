@@ -1,5 +1,5 @@
 <!--套用formValidator驗證機制-->
-<form action="<{$smarty.server.PHP_SELF}>" method="post" id="myForm" enctype="multipart/form-data"class="form-horizontal">
+<form action="<{$smarty.server.PHP_SELF}>" method="post" id="myForm" enctype="multipart/form-data" class="form-horizontal">
 
     <!--社團名稱-->
     <div class="form-group row">

@@ -352,7 +352,7 @@ class Club_main
     public static function get_all($club_year = '', $club_seme = '', $grade = '', $filter = false)
     {
         global $xoopsDB;
-        $and_grade = $grade ? "and `club_grade` & '$grade'" : '';
+        $and_grade = $grade ? "and (`club_grade` & '$grade' or `club_grade` = '$grade')" : '';
         $sql = "select * from `" . $xoopsDB->prefix("club_main") . "` where club_year='$club_year' and club_seme='$club_seme' $and_grade";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data_arr = [];
@@ -379,11 +379,12 @@ class Club_main
     }
 
     //取得某學年度的社團id
-    public static function get_clubs($year, $seme, $grade)
+    public static function get_clubs($year, $seme, $grade = '')
     {
         global $xoopsDB;
         $club_arr = [];
-        $sql = "select club_id from `" . $xoopsDB->prefix("club_main") . "` where `club_year`='$year' and `club_seme`='$seme' and `club_grade` & '$grade' order by rand()";
+        $and_grade = $grade ? "and (`club_grade` & '$grade' or `club_grade` = '$grade')" : '';
+        $sql = "select club_id from `" . $xoopsDB->prefix("club_main") . "` where `club_year`='$year' and `club_seme`='$seme' $and_grade order by rand()";
         $club_arr = [];
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($club_id) = $xoopsDB->fetchRow($result)) {

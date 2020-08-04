@@ -30,9 +30,9 @@
                 <td><{$stu.choice_result}></td>
                 <td>
                     <{if $stu.choice_result=='' and $ok_num < $club_num}>
-                        <a href="index.php?op=choice_result_ok&apply_id=<{$stu.apply_id}>&club_id=<{$club_id}>"><img src="images/checked.png" alt="優先錄取" data-toggle="tooltip" title="優先錄取"></a>
+                        <a href="index.php?op=choice_result_ok&apply_id=<{$stu.apply_id}>&club_id=<{$club_id}>"><img src="images/checked.png" alt="點我優先錄取" data-toggle="tooltip" title="點我優先錄取"></a>
                     <{else}>
-                        <a href="index.php?op=choice_result_del_ok&apply_id=<{$stu.apply_id}>&club_id=<{$club_id}>"><img src="images/multiply.png" alt="取消正取" data-toggle="tooltip" title="取消正取"></a>
+                        <a href="index.php?op=choice_result_del_ok&apply_id=<{$stu.apply_id}>&club_id=<{$club_id}>"><img src="images/multiply.png" alt="點我取消正取" data-toggle="tooltip" title="點我取消正取"></a>
                     <{/if}>
                 </td>
             </tr>

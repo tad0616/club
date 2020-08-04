@@ -56,9 +56,9 @@ class Tools
         if ($m >= 8 or $m < 2) {
             $club_seme = 1;
         } else {
-            $club_year = 2;
+            $club_seme = 2;
         }
-        return $club_year;
+        return $club_seme;
     }
 
     public static function isStudent()

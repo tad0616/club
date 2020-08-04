@@ -199,7 +199,7 @@ class Club_choice
     public static function get_sort_count($year, $seme, $grade = '', $sort = 1)
     {
         global $xoopsDB;
-        $and_grade = $grade ? "and c.`club_grade` & '$grade'" : '';
+        $and_grade = $grade ? "and (c.`club_grade` & '$grade' or c.`club_grade` = '$grade')" : '';
         $sql = "select b.club_id, count(*) as n from `" . $xoopsDB->prefix("club_apply") . "` as a
         join `" . $xoopsDB->prefix("club_choice") . "` as b on a.apply_id = b.apply_id
         join `" . $xoopsDB->prefix("club_main") . "` as c on b.club_id = c.club_id
@@ -309,29 +309,34 @@ class Club_choice
 
         if ($apply_id) {
             $apply = club_apply::get($apply_id);
+
             // 找出所有社團
-            $club_arr = self::get_sort_count($year, $seme, $apply['stu_grade'], 1);
-            asort($club_arr);
+            $club_arr = Club_main::get_clubs($year, $seme, $apply['stu_grade']);
 
             self::rand_apply($club_arr, $year, $seme, $apply_id);
         } else {
+            //取得尚未填志願學生
             $stu_arr = self::not_chosen_yet($year, $seme, true);
-            foreach ($stu_arr as $stu_id) {
 
+            foreach ($stu_arr as $stu_id) {
+                //取得該生的志願資料
                 $apply = Club_apply::get('', $stu_id, $year, $seme);
 
                 $apply_id = $apply['apply_id'];
+                // 若沒申請過
                 if (empty($apply_id)) {
+                    // 取得該生詳細資料
                     $stu = Tools::get_stu($stu_id, $year);
+                    // 產生申請資料
                     $apply_id = Club_apply::store($stu_id, $year, $seme, $stu['stu_name'], $stu['stu_grade'], $stu['stu_class'], $stu['stu_seat_no'], $stu['stu_no']);
-
+                    // 取得申請資料
                     $apply = Club_apply::get('', $stu_id, $year, $seme);
                     $apply_id = $apply['apply_id'];
                 }
 
                 // 找出所有社團
-                $club_arr = self::get_sort_count($year, $seme, $apply['stu_grade'], 1);
-                asort($club_arr);
+                $club_arr = Club_main::get_clubs($year, $seme, $apply['stu_grade']);
+                // asort($club_arr);
                 self::rand_apply($club_arr, $year, $seme, $apply_id);
             }
         }
@@ -459,9 +464,6 @@ class Club_choice
                 // 找出欲錄取總人數
                 $club = Club_main::get($club_id);
                 $club_num = $club['club_num'];
-
-                // 找第N志願的人數
-                // $choice_num = self::get_sort_count($year, $seme, '', $i);
 
                 // 先已經錄取的人數
                 $ok_num = self::choice_result_ok($club_id, true);
