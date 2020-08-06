@@ -352,7 +352,7 @@ class Club_main
     public static function get_all($club_year = '', $club_seme = '', $grade = '', $filter = false)
     {
         global $xoopsDB;
-        $and_grade = $grade ? "and (`club_grade` & '$grade' or `club_grade` = '$grade')" : '';
+        $and_grade = $grade ? "and FIND_IN_SET('$grade', `club_grade`)" : '';
         $sql = "select * from `" . $xoopsDB->prefix("club_main") . "` where club_year='$club_year' and club_seme='$club_seme' $and_grade";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         $data_arr = [];
@@ -383,7 +383,7 @@ class Club_main
     {
         global $xoopsDB;
         $club_arr = [];
-        $and_grade = $grade ? "and (`club_grade` & '$grade' or `club_grade` = '$grade')" : '';
+        $and_grade = $grade ? "and FIND_IN_SET('$grade', `club_grade`)" : '';
         $sql = "select club_id from `" . $xoopsDB->prefix("club_main") . "` where `club_year`='$year' and `club_seme`='$seme' $and_grade order by rand()";
         $club_arr = [];
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
