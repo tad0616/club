@@ -1,4 +1,5 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Club\Club_choice;
 use XoopsModules\Club\Club_main;
 use XoopsModules\Club\Tools;
@@ -25,11 +26,11 @@ use XoopsModules\Club\Tools;
 require_once __DIR__ . '/header.php';
 
 /*-----------執行動作判斷區----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$year = system_CleanVars($_REQUEST, 'year', Tools::get_club_year(), 'int');
-$seme = system_CleanVars($_REQUEST, 'seme', Tools::get_club_seme(), 'int');
-$club_id = system_CleanVars($_REQUEST, 'club_id', 0, 'int');
+$op = Request::getString('op');
+$club_id = Request::getInt('club_id');
+$year = Request::getInt('year', Tools::get_club_year());
+$seme = Request::getInt('seme', Tools::get_club_seme());
+
 Tools::chk_club_power(__FILE__, __LINE__, 'download');
 
 $club = Club_main::get($club_id);

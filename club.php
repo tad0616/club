@@ -1,11 +1,7 @@
 <?php
-use XoopsModules\Tadtools\CkEditor;
-use XoopsModules\Tadtools\DataList;
-use XoopsModules\Tadtools\FormValidator;
-use XoopsModules\Tadtools\TadUpFiles;
+use Xmf\Request;
 use XoopsModules\Club\Club_main;
 use XoopsModules\Tadtools\Utility;
-use XoopsModules\Tadtools\SweetAlert;
 /**
  * Club module
  *
@@ -24,7 +20,6 @@ use XoopsModules\Tadtools\SweetAlert;
  * @version    $Id $
  **/
 
-
 /*-----------引入檔案區--------------*/
 require_once __DIR__ . '/header.php';
 $GLOBALS['xoopsOption']['template_main'] = 'club_club.tpl';
@@ -32,16 +27,13 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 
 /*-----------功能函數區----------*/
 
-
 /*-----------變數過濾----------*/
-include_once $GLOBALS['xoops']->path( '/modules/system/include/functions.php' );
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$club_id = system_CleanVars($_REQUEST, 'club_id', 0, 'int');
-
+$op = Request::getString('op');
+$club_id = Request::getInt('club_id');
 
 /*-----------執行動作判斷區----------*/
-switch($op){
-    
+switch ($op) {
+
     //新增資料
     case 'club_main_store':
         $club_id = Club_main::store();
@@ -83,10 +75,10 @@ switch($op){
 
     //預設動作
     default:
-        if(empty($club_id)) {
+        if (empty($club_id)) {
             Club_main::index();
             $op = 'club_main_index';
-        }else{
+        } else {
             Club_main::show($club_id);
             $op = 'club_main_show';
         }
@@ -94,7 +86,7 @@ switch($op){
 }
 
 /*-----------秀出結果區--------------*/
-$xoopsTpl->assign('toolbar' , Utility::toolbar_bootstrap($interface_menu));
+$xoopsTpl->assign('toolbar', Utility::toolbar_bootstrap($interface_menu));
 $xoopsTpl->assign('now_op', $op);
 $xoTheme->addStylesheet(XOOPS_URL . '/modules/club/css/module.css');
 require_once XOOPS_ROOT_PATH . '/footer.php';

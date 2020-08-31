@@ -1,8 +1,10 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Club\Club_choice;
 use XoopsModules\Club\Club_main;
 use XoopsModules\Club\Tools;
 use XoopsModules\Tadtools\Utility;
+
 /**
  * Club module
  *
@@ -29,14 +31,13 @@ require_once XOOPS_ROOT_PATH . '/header.php';
 /*-----------功能函數區----------*/
 
 /*-----------變數過濾----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$mode = system_CleanVars($_REQUEST, 'mode', '', 'string');
-$year = system_CleanVars($_REQUEST, 'year', Tools::get_club_year(), 'int');
-$seme = system_CleanVars($_REQUEST, 'seme', Tools::get_club_seme(), 'int');
-$club_id = system_CleanVars($_REQUEST, 'club_id', 0, 'int');
-$stu_id = system_CleanVars($_REQUEST, 'stu_id', 0, 'int');
-$apply_id = system_CleanVars($_REQUEST, 'apply_id', 0, 'int');
+$op = Request::getString('op');
+$mode = Request::getString('mode');
+$club_id = Request::getInt('club_id');
+$stu_id = Request::getInt('stu_id');
+$apply_id = Request::getInt('apply_id');
+$year = Request::getInt('year', Tools::get_club_year());
+$seme = Request::getInt('seme', Tools::get_club_seme());
 
 /*-----------執行動作判斷區----------*/
 switch ($op) {

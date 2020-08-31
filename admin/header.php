@@ -18,6 +18,12 @@
  **/
 
 require_once dirname(dirname(dirname(__DIR__))) . '/include/cp_header.php';
+$modhandler = xoops_gethandler('module');
+$xoopsScsModule = $modhandler->getByDirname("scs");
+if (!$xoopsScsModule) {
+    redirect_header('/modules/system/admin.php?fct=modulesadmin&op=install&module=scs', 15, "請先安裝「國中輔導系統」，並匯入學生資料，始能使用「國中社團選填系統」。");
+}
+
 require_once XOOPS_ROOT_PATH . '/modules/club/preloads/autoloader.php';
 require_once XOOPS_ROOT_PATH . '/modules/scs/preloads/autoloader.php';
 require_once XOOPS_ROOT_PATH . '/modules/tadtools/preloads/autoloader.php';

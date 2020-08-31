@@ -1,9 +1,11 @@
 <?php
+use Xmf\Request;
 use XoopsModules\Club\Club_main;
 use XoopsModules\Club\Tools as ClubTools;
 use XoopsModules\Scs\Tools as ScsTools;
 use XoopsModules\Tadtools\TadDataCenter;
 use XoopsModules\Tadtools\Utility;
+
 /**
  * Club module
  *
@@ -113,12 +115,11 @@ function save_club_officer($club_year, $club_seme, $club, $copy_from_ys = '')
     return "{$club_year}-{$club_seme}";
 }
 /*-----------變數過濾----------*/
-include_once $GLOBALS['xoops']->path('/modules/system/include/functions.php');
-$op = system_CleanVars($_REQUEST, 'op', '', 'string');
-$club_ys = system_CleanVars($_REQUEST, 'club_ys', ClubTools::get_club_year() . '-' . ClubTools::get_club_seme(), 'string');
+$op = Request::getString('op');
+$club_ys = Request::getString('club_ys', ClubTools::get_club_year() . '-' . ClubTools::get_club_seme());
 list($club_year, $club_seme) = explode('-', $club_ys);
-$club = system_CleanVars($_REQUEST, 'club', '', 'array');
-$copy_from_ys = system_CleanVars($_REQUEST, 'copy_from_ys', '', 'string');
+$club = Request::getArray('club');
+$copy_from_ys = Request::getString('copy_from_ys');
 
 /*-----------執行動作判斷區----------*/
 switch ($op) {
