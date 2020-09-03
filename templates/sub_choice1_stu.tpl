@@ -1,6 +1,6 @@
 <{if 'import'|have_apply_power}>
     <{if $ok_num < $club_num}>
-        <div class="pull-right bar">
+        <div class="pull-right float-right bar">
             <a href="index.php?op=choice_result_random&club_id=<{$club_id}>" class="btn btn-primary"><i class="fa fa-check-square-o" aria-hidden="true"></i> 亂數錄取</a>
         </div>
     <{/if}>
@@ -30,9 +30,9 @@
                 <td><{$stu.choice_result}></td>
                 <td>
                     <{if $stu.choice_result=='' and $ok_num < $club_num}>
-                        <a href="index.php?op=choice_result_ok&apply_id=<{$stu.apply_id}>&club_id=<{$club_id}>"><img src="images/checked.png" alt="點我優先錄取" data-toggle="tooltip" title="點我優先錄取"></a>
+                        <a href="index.php?op=choice_result_ok&apply_id=<{$stu.apply_id}>&club_id=<{$club_id}>&to=clubTab2"><img src="images/checked.png" alt="點我優先錄取" data-toggle="tooltip" title="點我優先錄取"></a>
                     <{else}>
-                        <a href="index.php?op=choice_result_del_ok&apply_id=<{$stu.apply_id}>&club_id=<{$club_id}>"><img src="images/multiply.png" alt="點我取消正取" data-toggle="tooltip" title="點我取消正取"></a>
+                        <a href="index.php?op=choice_result_del_ok&apply_id=<{$stu.apply_id}>&club_id=<{$club_id}>&to=clubTab2"><img src="images/multiply.png" alt="點我取消正取" data-toggle="tooltip" title="點我取消正取"></a>
                     <{/if}>
                 </td>
             </tr>

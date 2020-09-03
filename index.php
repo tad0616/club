@@ -38,6 +38,7 @@ $stu_id = Request::getInt('stu_id');
 $apply_id = Request::getInt('apply_id');
 $year = Request::getInt('year', Tools::get_club_year());
 $seme = Request::getInt('seme', Tools::get_club_seme());
+$to = Request::getString('to');
 
 /*-----------執行動作判斷區----------*/
 switch ($op) {
@@ -96,12 +97,12 @@ switch ($op) {
 
     case "choice_result_ok":
         Club_choice::set_choice_result($apply_id, $club_id, '正取');
-        header("location: index.php?club_id={$club_id}#clubTab2");
+        header("location: index.php?club_id={$club_id}#{$to}");
         exit;
 
     case "choice_result_del_ok":
         Club_choice::set_choice_result($apply_id, $club_id, '');
-        header("location: index.php?club_id={$club_id}#clubTab2");
+        header("location: index.php?club_id={$club_id}#{$to}");
         exit;
 
     case "choice_result_all_random":

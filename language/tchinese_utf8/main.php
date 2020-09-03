@@ -18,23 +18,3 @@
  **/
 
 xoops_loadLanguage('main', 'tadtools');
-
-define('_MD_CLUB_APPLY_ID', '填寫者編號');
-define('_MD_CLUB_CLUB_ID', '社團編號');
-define('_MD_CLUB_CHOICE_SORT', '志願序');
-define('_MD_CLUB_CHOICE_RESULT', '結果');
-define('_MD_CLUB_CLUB_SCORE', '成績');
-define('_MD_CLUB_SCORE_DATE', '輸入成績日期');
-define('_MD_CLUB_PAGE_1', '社團管理');
-define('_MD_CLUB_CLUB_ID', '社團編號');
-define('_MD_CLUB_CLUB_YEAR', '學年');
-define('_MD_CLUB_CLUB_SEME', '學期');
-define('_MD_CLUB_CLUB_TITLE', '社團名稱');
-define('_MD_CLUB_CLUB_NUM', '上課人數');
-define('_MD_CLUB_CLUB_TEA_NAME', '授課教師');
-define('_MD_CLUB_CLUB_TEA_UID', '教師uid');
-define('_MD_CLUB_CLUB_DESC', '課程說明');
-define('_MD_CLUB_CLUB_PLACE', '地點');
-define('_MD_CLUB_CLUB_NOTE', '備註');
-define('_MD_CLUB_CLUB_GRADE', '開放選填年級');
-define('_MD_CLUB_SHOW_CLUB_ID_FILES', '');

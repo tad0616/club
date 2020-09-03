@@ -1,4 +1,8 @@
-<div class="pull-right">
+<h2 class="club">
+    <{$club_year}>-<{$club_seme}> <{$club_title}>
+</h2>
+
+<div class="text-right bar">
     <{if 'destroy'|have_club_power and !$stu_arr}>
         <a href="javascript:club_main_destroy_func(<{$club_id}>);" class="btn btn-sm btn-xs btn-danger"><i class="fa fa-times" aria-hidden="true"></i> 刪除<{$club_title}></a>
     <{/if}>
@@ -10,11 +14,6 @@
     <{/if}>
     <a href="<{$xoops_url}>/modules/club/" class="btn btn-sm btn-xs btn-success"><i class="fa fa-undo" aria-hidden="true"></i> 回社團一覽</a>
 </div>
-
-
-<h2 class="club">
-<{$club_year}>-<{$club_seme}> <{$club_title}>
-</h2>
 
 <div class="alert alert-warning">
     <span data-toggle="tooltip" title="正取人數 / 招收人數"><i class="fa fa-users"></i> <{$ok_num}>/<{$club_num}></span>

@@ -4,28 +4,28 @@
     <!--社團名稱-->
     <div class="form-group row">
         <label class="col-sm-2 control-label col-form-label text-md-right">
-            <{$smarty.const._MD_CLUB_CLUB_TITLE}>
+            社團名稱
         </label>
         <div class="col-sm-4">
-            <input type="text" name="club_title" id="club_title" class="form-control validate[required]" value="<{$club_title}>" placeholder="<{$smarty.const._MD_CLUB_CLUB_TITLE}>">
+            <input type="text" name="club_title" id="club_title" class="form-control validate[required]" value="<{$club_title}>" placeholder="社團名稱">
         </div>
 
         <!--授課教師-->
         <label class="col-sm-2 control-label col-form-label text-md-right">
-            <{$smarty.const._MD_CLUB_CLUB_TEA_NAME}>
+            授課教師
         </label>
         <div class="col-sm-4">
-            <input type="text" name="club_tea_name" id="club_tea_name" class="form-control " value="<{$club_tea_name}>" placeholder="<{$smarty.const._MD_CLUB_CLUB_TEA_NAME}>">
+            <input type="text" name="club_tea_name" id="club_tea_name" class="form-control " value="<{$club_tea_name}>" placeholder="授課教師">
         </div>
     </div>
 
     <!--學年-->
     <div class="form-group row">
         <label class="col-sm-2 control-label col-form-label text-md-right">
-            <{$smarty.const._MD_CLUB_CLUB_YEAR}>
+            學年
         </label>
         <div class="col-sm-4">
-            <input type="text" name="club_year" list="club_year" class="form-control validate[required]" value="<{$club_year}>" placeholder="<{$smarty.const._MD_CLUB_CLUB_YEAR}>">
+            <input type="text" name="club_year" list="club_year" class="form-control validate[required, custom[integer]]" value="<{$club_year}>" placeholder="學年">
             <datalist id="club_year">
                 <{foreach from=$club_year_arr key=k item=title}>
                     <option value="<{$title}>">
@@ -35,10 +35,10 @@
 
         <!--學期-->
         <label class="col-sm-2 control-label col-form-label text-md-right">
-            <{$smarty.const._MD_CLUB_CLUB_SEME}>
+            學期
         </label>
         <div class="col-sm-4">
-            <input type="text" name="club_seme" list="club_seme" class="form-control validate[required]" value="<{$club_seme}>" placeholder="<{$smarty.const._MD_CLUB_CLUB_SEME}>">
+            <input type="text" name="club_seme" list="club_seme" class="form-control validate[required, custom[integer]]" value="<{$club_seme}>" placeholder="學期">
             <datalist id="club_seme">
                 <{foreach from=$club_seme_arr key=k item=title}>
                     <option value="<{$title}>">
@@ -50,25 +50,25 @@
     <!--上課人數-->
     <div class="form-group row">
         <label class="col-sm-2 control-label col-form-label text-md-right">
-            <{$smarty.const._MD_CLUB_CLUB_NUM}>
+            上課人數
         </label>
         <div class="col-sm-4">
-            <input type="text" name="club_num" id="club_num" class="form-control validate[required]" value="<{$club_num}>" placeholder="<{$smarty.const._MD_CLUB_CLUB_NUM}>">
+            <input type="number" name="club_num" id="club_num" class="form-control validate[required, custom[integer]]" value="<{$club_num}>" placeholder="上課人數">
         </div>
 
         <!--地點-->
         <label class="col-sm-2 control-label col-form-label text-md-right">
-            <{$smarty.const._MD_CLUB_CLUB_PLACE}>
+            地點
         </label>
         <div class="col-sm-4">
-            <input type="text" name="club_place" id="club_place" class="form-control " value="<{$club_place}>" placeholder="<{$smarty.const._MD_CLUB_CLUB_PLACE}>">
+            <input type="text" name="club_place" id="club_place" class="form-control " value="<{$club_place}>" placeholder="地點">
         </div>
     </div>
 
     <!--開放選填年級-->
     <div class="form-group row">
         <label class="col-sm-2 control-label col-form-label text-md-right">
-            <{$smarty.const._MD_CLUB_CLUB_GRADE}>
+            開放選填年級
         </label>
         <div class="col-sm-10">
             <{foreach from=$stu_can_apply_grade item=grade}>
@@ -87,7 +87,7 @@
     <!--課程說明-->
     <div class="form-group row">
         <label class="col-sm-2 control-label col-form-label text-md-right">
-            <{$smarty.const._MD_CLUB_CLUB_DESC}>
+            課程說明
         </label>
         <div class="col-sm-10">
             <{$club_desc_editor}>
@@ -98,10 +98,10 @@
     <!--備註-->
     <div class="form-group row">
         <label class="col-sm-2 control-label col-form-label text-md-right">
-            <{$smarty.const._MD_CLUB_CLUB_NOTE}>
+            備註
         </label>
         <div class="col-sm-10">
-            <textarea name="club_note" rows=3 id="club_note" class="form-control " placeholder="<{$smarty.const._MD_CLUB_CLUB_NOTE}>"><{$club_note}></textarea>
+            <textarea name="club_note" rows=3 id="club_note" class="form-control " placeholder="備註"><{$club_note}></textarea>
         </div>
     </div>
 

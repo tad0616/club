@@ -45,8 +45,10 @@
         <{/if}>
     <{elseif 'update'|have_club_power and $not_chosen_yet_count==0 and $clubs_not_ok_sum!=0 and !$stu_edit_able}>
         <a href="index.php?op=choice_result_all_random" class="btn btn-primary" data-toggle="tooltip" title="將 <{$clubs_not_ok_sum}> 位尚未錄取的學生依照其志願序優先順序隨機錄取"><i class="fa fa-check-square-o" aria-hidden="true"></i> 批次亂數錄取</a>
-    <{elseif 'download'|have_club_power and $not_chosen_yet_count==0 and $clubs_not_ok_sum==0 and !$stu_edit_able}>
-        <a href="<{$xoops_url}>/modules/club/excel_list_by_club.php?year=<{$year}>&seme=<{$seme}>" class="btn btn-success"><i class="fa fa-download"></i> 各社團名單</a>
+    <{/if}>
+
+    <{if 'download'|have_club_power and !$stu_edit_able}>
+        <a href="<{$xoops_url}>/modules/club/excel_list_by_club.php?year=<{$year}>&seme=<{$seme}>" class="btn btn-info"><i class="fa fa-download"></i> 各社團名單</a>
         <a href="<{$xoops_url}>/modules/club/excel_list_by_class.php?year=<{$year}>&seme=<{$seme}>" class="btn btn-success"><i class="fa fa-download"></i> 各班級名單</a>
         <a href="<{$xoops_url}>/modules/club/excel_club_stu.php?year=<{$year}>&seme=<{$seme}>" class="btn btn-primary"><i class="fa fa-users"></i> 社團點名表</a>
     <{/if}>
@@ -58,19 +60,19 @@
             <tr class="info">
 
                 <!--學年學期-->
-                <th class="no"><{$smarty.const._MD_CLUB_CLUB_SEME}></th>
+                <th class="no c">學期</th>
                 <!--社團名稱-->
-                <th class="no"><{$smarty.const._MD_CLUB_CLUB_TITLE}></th>
-                <th class="no"><span data-toggle="tooltip" title="可選填此社團的年級">年級</span></th>
-                <th class="no"><span data-toggle="tooltip" title="社團最多招收人數">人數</span></th>
-                <th class="no"><span data-toggle="tooltip" title="將此社團設為第一志願的人數">志願一</span></th>
-                <th class="no"><span data-toggle="tooltip" title="本社團已正取的人數">正取數</span></th>
+                <th class="no c">社團名稱</th>
+                <th class="no c"><span data-toggle="tooltip" title="可選填此社團的年級">年級</span></th>
+                <th class="no c"><span data-toggle="tooltip" title="社團最多招收人數">人數</span></th>
+                <th class="no c"><span data-toggle="tooltip" title="將此社團設為第一志願的人數">志願一</span></th>
+                <th class="no c"><span data-toggle="tooltip" title="本社團已正取的人數">正取數</span></th>
                 <!--授課教師-->
-                <th class="no"><{$smarty.const._MD_CLUB_CLUB_TEA_NAME}></th>
+                <th class="no c">授課教師</th>
                 <!--地點-->
-                <th class="no"><{$smarty.const._MD_CLUB_CLUB_PLACE}></th>
+                <th class="no c">地點</th>
                 <{if 'update'|have_club_power}>
-                    <th class="no"><{$smarty.const._TAD_FUNCTION}></th>
+                    <th class="no c"><{$smarty.const._TAD_FUNCTION}></th>
                 <{/if}>
             </tr>
         </thead>

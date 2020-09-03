@@ -1,6 +1,6 @@
 <h2 class="club"><{$year}>學年度第<{$seme}>學期尚未錄取學生一覽</h2>
 
-<div class="pull-right bar">
+<div class="pull-right float-right bar">
     <a href="index.php" class="btn btn-success"><i class="fa fa-undo" aria-hidden="true"></i> 回社團一覽</a>
     <{if 'import'|have_apply_power and $clubs_not_ok_sum!=0}>
         <a href="index.php?op=choice_result_all_random" class="btn btn-primary" data-toggle="tooltip" title="將 <{$clubs_not_ok_sum}> 位尚未錄取的學生依照其志願序優先順序隨機錄取"> <i class="fa fa-check-square-o" aria-hidden="true"></i> 批次亂數錄取</a>

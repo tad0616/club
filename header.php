@@ -41,8 +41,8 @@ if (!isset($_SESSION['officer'])) {
     $_SESSION['officer'] = ($xoopsUser) ? Tools::isOfficer() : false;
 }
 
-$interface_menu[_TAD_TO_MOD] = "index.php";
-$interface_icon[_TAD_TO_MOD] = "fa-chevron-right";
+$interface_menu['社團一覽'] = "index.php";
+$interface_icon['社團一覽'] = "fa-chevron-right";
 
 if ($_SESSION['club_adm']) {
     $interface_menu[_TAD_TO_ADMIN] = "admin/main.php";

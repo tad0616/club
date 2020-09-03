@@ -1,6 +1,6 @@
 <{if 'view_ok'|have_club_power}>
     <{if 'import'|have_apply_power}>
-        <div class="pull-right">
+        <div class="pull-right float-right">
             <{if 'download'|have_club_power}>
                 <div style="margin-bottom:4px;">
                     <a href="<{$xoops_url}>/modules/club/excel_club_stu.php?club_id=<{$club_id}>" class="btn btn-sm btn-primary" data-toggle="tooltip" title="下載「<{$club_title}>」的點名表"><i class="fa fa-users"></i> 下載點名表</a>
@@ -28,6 +28,7 @@
                 <th>姓名</th>
                 <th>志願序</th>
                 <th>成績</th>
+                <th>功能</th>
             </tr>
         </thead>
 
@@ -40,6 +41,9 @@
                 <td><a href="index.php?stu_id=<{$stu.stu_id}>"><{$stu.stu_name}></a></td>
                 <td>第 <{$stu.choice_sort}> 志願</td>
                 <td><{$stu.club_score}></td>
+                <td>
+                    <a href="index.php?op=choice_result_del_ok&apply_id=<{$stu.apply_id}>&club_id=<{$club_id}>&to=clubTab1"><img src="images/multiply.png" alt="點我取消正取" data-toggle="tooltip" title="點我取消正取"></a>
+                </td>
             </tr>
         <{/foreach}>
         </tbody>
