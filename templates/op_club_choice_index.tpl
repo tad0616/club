@@ -38,7 +38,6 @@
                             <button type="submit" class="btn btn-primary" name="op" value="choice_result_ok">儲存</button>
                         </div>
                     </div>
-
                 </form>
             </div>
             <div class="col-sm-7 text-right">

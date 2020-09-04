@@ -335,6 +335,30 @@ class Club_apply
         return $data_arr;
     }
 
+    // 搜尋學生
+    public static function search_stu($key, $year, $seme)
+    {
 
+        global $xoopsDB, $xoopsTpl;
+        $sql = "select * from `" . $xoopsDB->prefix("club_apply") . "`
+            where (`stu_name` like '%{$key}%' or `stu_no` = '{$key}') and apply_year='{$year}' and apply_seme='{$seme}'";
+
+        $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
+        $all_stu = [];
+        while ($data = $xoopsDB->fetchArray($result)) {
+            $all_stu[] = $data;
+        }
+
+        if (\sizeof($all_stu) == 1) {
+            \header("location: index.php?mode=apply_by_officer&stu_id={$all_stu[0]['stu_id']}");
+            exit;
+        }
+
+        $xoopsTpl->assign('all_stu', $all_stu);
+        $xoopsTpl->assign('key', $key);
+        $xoopsTpl->assign('year', $year);
+        $xoopsTpl->assign('seme', $seme);
+        return $all_stu;
+    }
 
 }

@@ -33,25 +33,42 @@
 <{/if}>
 </div>
 
-<div class="text-right" style="margin:10px auto;">
-    <{if 'create'|have_club_power}>
-        <a href="<{$xoops_url}>/modules/club/index.php?op=club_main_create" class="btn btn-info"><i class="fa fa-plus"></i> 新增社團</a>
-    <{/if}>
-    <{if 'import'|have_apply_power and $not_chosen_yet_count!=0 and $chosen_count!=0}>
-        <{if $stu_edit_able}>
-            <a href="index.php?op=batch_apply&year=<{$year}>&seme=<{$seme}>" class="btn btn-primary disabled"  ><i class="fa fa-random" aria-hidden="true"></i> 替<{$not_chosen_yet_count}>位學生批次亂數選填（<{$setup.stu_stop_sign.0}>後啟用）</a>
-        <{else}>
-            <a href="index.php?op=batch_apply&year=<{$year}>&seme=<{$seme}>" class="btn btn-primary" data-toggle="tooltip" title="替 <{$not_chosen_yet_count}> 位尚未完成填寫志願序的學生進行隨機亂數選填"><i class="fa fa-random" aria-hidden="true"></i> 替<{$not_chosen_yet_count}>位學生批次亂數選填</a>
+<div class="row" style="margin:10px auto;">
+    <div class="col-sm-5">
+        <form action="index.php" method="post">
+            <div class="input-group">
+                <div class="input-group-prepend input-group-addon">
+                    <span class="input-group-text">搜尋學生：</span>
+                </div>
+                <input type="text" name="key" value="<{$key}>" class="form-control" placeholder="姓名或學號">
+                <div class="input-group-append input-group-btn">
+                    <input type="hidden" name="year" value="<{$year}>">
+                    <input type="hidden" name="seme" value="<{$seme}>">
+                    <button type="submit" class="btn btn-primary" name="op" value="search_stu">搜尋</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-sm-7 text-right" >
+        <{if 'create'|have_club_power}>
+            <a href="<{$xoops_url}>/modules/club/index.php?op=club_main_create" class="btn btn-info"><i class="fa fa-plus"></i> 新增社團</a>
         <{/if}>
-    <{elseif 'update'|have_club_power and $not_chosen_yet_count==0 and $clubs_not_ok_sum!=0 and !$stu_edit_able}>
-        <a href="index.php?op=choice_result_all_random" class="btn btn-primary" data-toggle="tooltip" title="將 <{$clubs_not_ok_sum}> 位尚未錄取的學生依照其志願序優先順序隨機錄取"><i class="fa fa-check-square-o" aria-hidden="true"></i> 批次亂數錄取</a>
-    <{/if}>
+        <{if 'import'|have_apply_power and $not_chosen_yet_count!=0 and $chosen_count!=0}>
+            <{if $stu_edit_able}>
+                <a href="index.php?op=batch_apply&year=<{$year}>&seme=<{$seme}>" class="btn btn-primary disabled"  ><i class="fa fa-random" aria-hidden="true"></i> 替<{$not_chosen_yet_count}>位學生批次亂數選填（<{$setup.stu_stop_sign.0}>後啟用）</a>
+            <{else}>
+                <a href="index.php?op=batch_apply&year=<{$year}>&seme=<{$seme}>" class="btn btn-primary" data-toggle="tooltip" title="替 <{$not_chosen_yet_count}> 位尚未完成填寫志願序的學生進行隨機亂數選填"><i class="fa fa-random" aria-hidden="true"></i> 替<{$not_chosen_yet_count}>位學生批次亂數選填</a>
+            <{/if}>
+        <{elseif 'update'|have_club_power and $not_chosen_yet_count==0 and $clubs_not_ok_sum!=0 and !$stu_edit_able}>
+            <a href="index.php?op=choice_result_all_random" class="btn btn-primary" data-toggle="tooltip" title="將 <{$clubs_not_ok_sum}> 位尚未錄取的學生依照其志願序優先順序隨機錄取"><i class="fa fa-check-square-o" aria-hidden="true"></i> 批次亂數錄取</a>
+        <{/if}>
 
-    <{if 'download'|have_club_power and !$stu_edit_able}>
-        <a href="<{$xoops_url}>/modules/club/excel_list_by_club.php?year=<{$year}>&seme=<{$seme}>" class="btn btn-info"><i class="fa fa-download"></i> 各社團名單</a>
-        <a href="<{$xoops_url}>/modules/club/excel_list_by_class.php?year=<{$year}>&seme=<{$seme}>" class="btn btn-success"><i class="fa fa-download"></i> 各班級名單</a>
-        <a href="<{$xoops_url}>/modules/club/excel_club_stu.php?year=<{$year}>&seme=<{$seme}>" class="btn btn-primary"><i class="fa fa-users"></i> 社團點名表</a>
-    <{/if}>
+        <{if 'download'|have_club_power and !$stu_edit_able}>
+            <a href="<{$xoops_url}>/modules/club/excel_list_by_club.php?year=<{$year}>&seme=<{$seme}>" class="btn btn-info"><i class="fa fa-download"></i> 各社團名單</a>
+            <a href="<{$xoops_url}>/modules/club/excel_list_by_class.php?year=<{$year}>&seme=<{$seme}>" class="btn btn-success"><i class="fa fa-download"></i> 各班級名單</a>
+            <a href="<{$xoops_url}>/modules/club/excel_club_stu.php?year=<{$year}>&seme=<{$seme}>" class="btn btn-primary"><i class="fa fa-users"></i> 社團點名表</a>
+        <{/if}>
+    </div>
 </div>
 
 <{if $clubs}>

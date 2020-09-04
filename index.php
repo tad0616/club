@@ -1,5 +1,6 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Club\Club_apply;
 use XoopsModules\Club\Club_choice;
 use XoopsModules\Club\Club_main;
 use XoopsModules\Club\Tools;
@@ -39,6 +40,7 @@ $apply_id = Request::getInt('apply_id');
 $year = Request::getInt('year', Tools::get_club_year());
 $seme = Request::getInt('seme', Tools::get_club_seme());
 $to = Request::getString('to');
+$key = Request::getString('key');
 
 /*-----------執行動作判斷區----------*/
 switch ($op) {
@@ -123,6 +125,10 @@ switch ($op) {
         Tools::import_score($club_id);
         header("location: index.php?club_id=$club_id");
         exit;
+
+    case "search_stu":
+        Club_apply::search_stu($key, $year, $seme);
+        break;
 
     //預設動作
     default:
