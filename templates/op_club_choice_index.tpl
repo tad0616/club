@@ -27,7 +27,7 @@
                             <span class="input-group-text">內定正取：</span>
                         </div>
                         <select name="club_id" id="club_id" class="form-control">
-                            <option value=""></option>
+                            <option value="">尚未錄取任何社團</option>
                             <{foreach from=$club_choice key=club_id item=choice}>
                                 <option value="<{$choice.club_id}>" <{if $choice.choice_result=="正取"}>selected<{/if}>><{$choice.club_title}></option>
                             <{/foreach}>

@@ -22,7 +22,7 @@
     <tbody>
         <{foreach from=$no_result_yet key=class item=stu_arr}>
             <tr>
-                <td>
+                <td class="no">
                     <{$class}>（共<{$stu_arr|@sizeof}>位）
                 </td>
                 <td>
@@ -34,6 +34,13 @@
         <{/foreach}>
     </tbody>
 </table>
+
+<{if $not_chosen}>
+    無選填志願者：
+    <{foreach from=$not_chosen item=stu}>
+    <{$stu.stu_grade}>年<{$stu.stu_class}>班 <{$stu.stu_name}> (<{$stu.stu_seat_no}>) <br>
+    <{/foreach}>
+<{/if}>
 <{if $not_data}>
     查無學生資料者：
     <{foreach from=$not_data item=stu_id}>

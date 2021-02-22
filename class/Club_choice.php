@@ -31,9 +31,19 @@ class Club_choice
     //列出所有 club_choice 資料
     public static function index($year, $seme, $stu_id = '', $mode = '')
     {
-        global $xoopsDB, $xoopsTpl, $xoTheme;
+        global $xoopsDB, $xoopsTpl, $xoTheme, $xoopsModuleConfig;
+
+        // 可選填年級
+        $stu_can_apply_grade = explode(';', $xoopsModuleConfig['stu_can_apply_grade']);
+        $stu_can_apply_grade_txt = implode('、', $stu_can_apply_grade);
+
         $stu_id = (empty($stu_id) or !empty($_SESSION['stu_id'])) ? $_SESSION['stu_id'] : $stu_id;
         $stu = Tools::get_stu($stu_id, $year);
+
+        if (!\in_array($stu['stu_grade'], $stu_can_apply_grade)) {
+            redirect_header('index.php', 3, "僅開放 $stu_can_apply_grade_txt 選填志願");
+        }
+
         $apply = Club_apply::get('', $stu_id, $year, $seme);
 
         $clubs = Club_main::get_all($year, $seme, $stu['stu_grade'], true);
@@ -52,7 +62,6 @@ class Club_choice
                 $apply_id = Club_apply::store($stu_id, $year, $seme);
             } else {
                 $apply_id = Club_apply::store($stu_id, $year, $seme, $stu['stu_name'], $stu['stu_grade'], $stu['stu_class'], $stu['stu_seat_no'], $stu['stu_no']);
-
             }
 
             $apply = Club_apply::get('', $stu_id, $year, $seme);
@@ -110,7 +119,7 @@ class Club_choice
     }
 
     //新增資料到club_choice中
-    public static function store($apply_id, $club_id, $choice_sort = 0)
+    public static function store($apply_id, $club_id, $choice_sort = 0, $choice_result = '')
     {
         global $xoopsDB, $xoopsUser;
         Tools::chk_apply_power(__FILE__, __LINE__, 'store', $_SESSION['stu_id']);
@@ -120,15 +129,18 @@ class Club_choice
         $apply_id = (int) $apply_id;
         $club_id = (int) $club_id;
         $choice_sort = (int) $choice_sort;
+        $choice_result = $myts->addSlashes($choice_result);
 
         $sql = "insert into `" . $xoopsDB->prefix("club_choice") . "` (
-        `apply_id`,
-        `club_id`,
-        `choice_sort`
+            `apply_id`,
+            `club_id`,
+            `choice_sort`,
+            `choice_result`
         ) values(
-        '{$apply_id}',
-        '{$club_id}',
-        '{$choice_sort}'
+            '{$apply_id}',
+            '{$club_id}',
+            '{$choice_sort}',
+            '{$choice_result}'
         )";
         $xoopsDB->queryF($sql) or Utility::web_error($sql, __FILE__, __LINE__);
     }
@@ -394,25 +406,37 @@ class Club_choice
         global $xoopsDB, $xoopsTpl;
         Tools::chk_apply_power(__FILE__, __LINE__, 'index');
         $apply_arr = Club_apply::get_all($year, $seme);
-        $no_result_yet = [];
+        $no_result_yet = $not_chosen = [];
         $clubs_not_ok_sum = 0;
         foreach ($apply_arr as $apply_id => $stu) {
+            $choice = self::get_all($apply_id);
+            if (empty($choice)) {
+                $not_chosen[] = $stu;
+            }
+
             $club_id = self::get_choice_result($apply_id, '正取');
             if (empty($club_id)) {
-
                 $stu_grade = sprintf("%'.02d", $stu['stu_grade']);
                 $stu_class = sprintf("%'.02d", $stu['stu_class']);
                 $stu_seat_no = (int) $stu['stu_seat_no'];
                 $key = "{$stu_grade}-{$stu_class}";
                 if (!empty($stu)) {
-                    $no_result_yet[$key][$stu_seat_no] = $stu;
-                    $clubs_not_ok_sum++;
+                    if (!empty($choice)) {
+                        $no_result_yet[$key][$stu_seat_no] = $stu;
+                        $clubs_not_ok_sum++;
+                    }
                 } else {
                     $not_data[] = $stu_id;
                 }
             }
         }
+
         ksort($no_result_yet);
+        foreach ($no_result_yet as &$v) {
+            ksort($v);
+        }
+
+        $xoopsTpl->assign('not_chosen', $not_chosen);
         $xoopsTpl->assign('no_result_yet', $no_result_yet);
         $xoopsTpl->assign('clubs_not_ok_sum', $clubs_not_ok_sum);
         $xoopsTpl->assign('not_data', $not_data);

@@ -1,5 +1,7 @@
 <?php
 use Xmf\Request;
+use XoopsModules\Club\Club_apply;
+use XoopsModules\Club\Club_choice;
 use XoopsModules\Club\Club_main;
 use XoopsModules\Club\Tools as ClubTools;
 use XoopsModules\Scs\Tools as ScsTools;
@@ -63,7 +65,7 @@ function club_officer_setup($club_year = '', $club_seme = '')
 }
 
 // 儲存設定
-function save_club_officer($club_year, $club_seme, $club, $copy_from_ys = '')
+function save_club_officer($club_year, $club_seme, $club, $copy_from_ys = '', $copy_students = 0)
 {
     global $TadDataCenter;
     $TadDataCenter->set_col('club_setup', "{$club_year}-{$club_seme}");
@@ -102,13 +104,29 @@ function save_club_officer($club_year, $club_seme, $club, $copy_from_ys = '')
     }
     $TadDataCenter->saveCustomData($data_arr);
 
+    $clubs_id = [];
     if (!empty($copy_from_ys)) {
         list($year, $seme) = explode('-', $copy_from_ys);
         $old_club = Club_main::get_all($year, $seme);
         foreach ($old_club as $club) {
             $club['club_year'] = $club_year;
             $club['club_seme'] = $club_seme;
-            Club_main::store($club);
+            $clubs_id[$club['club_id']] = Club_main::store($club);
+        }
+
+        // 若需要複製學生
+        if ($copy_students) {
+            // 取得該年度的報名學生
+            $studs = Club_apply::get_all($year, $seme);
+            foreach ($studs as $stu) {
+                // 重新報名已取得新的報名編號
+                $apply_id = Club_apply::store($stu['stu_id'], $club_year, $club_seme, $stu['stu_name'], $stu['stu_grade'], $stu['stu_class'], $stu['stu_seat_no'], $stu['stu_no']);
+                // 取得該生原先的報名志願序
+                $choice_arr = Club_choice::get($stu['apply_id']);
+                foreach ($choice_arr as $choice) {
+                    Club_choice::store($apply_id, $clubs_id[$choice['club_id']], $choice['choice_sort'], $choice['choice_result']);
+                }
+            }
         }
     }
 
@@ -120,11 +138,12 @@ $club_ys = Request::getString('club_ys', ClubTools::get_club_year() . '-' . Club
 list($club_year, $club_seme) = explode('-', $club_ys);
 $club = Request::getArray('club');
 $copy_from_ys = Request::getString('copy_from_ys');
+$copy_students = Request::getInt('copy_students');
 
 /*-----------執行動作判斷區----------*/
 switch ($op) {
     case 'save_club_officer':
-        $club_ys = save_club_officer($club_year, $club_seme, $club, $copy_from_ys);
+        $club_ys = save_club_officer($club_year, $club_seme, $club, $copy_from_ys, $copy_students);
         redirect_header($_SERVER['PHP_SELF'] . "?club_ys={$club_ys}", 3, '儲存完成');
         break;
 

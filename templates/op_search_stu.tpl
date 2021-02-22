@@ -1,24 +1,26 @@
 <h2 class="my">搜尋「<{$key}>」結果</h2>
 
-<div class="row" style="margin:10px auto;">
-    <div class="col-sm-5">
-        <form action="index.php" method="post">
-            <div class="input-group">
-                <div class="input-group-prepend input-group-addon">
-                    <span class="input-group-text">搜尋學生：</span>
+<{if 'search_stu'|have_club_power}>
+    <div class="row" style="margin:10px auto;">
+        <div class="col-sm-5">
+            <form action="index.php" method="post">
+                <div class="input-group">
+                    <div class="input-group-prepend input-group-addon">
+                        <span class="input-group-text">搜尋學生：</span>
+                    </div>
+                    <input type="text" name="key" value="<{$key}>" class="form-control" placeholder="姓名或學號">
+                    <div class="input-group-append input-group-btn">
+                        <input type="hidden" name="year" value="<{$year}>">
+                        <input type="hidden" name="seme" value="<{$seme}>">
+                        <button type="submit" class="btn btn-primary" name="op" value="search_stu">搜尋</button>
+                    </div>
                 </div>
-                <input type="text" name="key" value="<{$key}>" class="form-control" placeholder="姓名或學號">
-                <div class="input-group-append input-group-btn">
-                    <input type="hidden" name="year" value="<{$year}>">
-                    <input type="hidden" name="seme" value="<{$seme}>">
-                    <button type="submit" class="btn btn-primary" name="op" value="search_stu">搜尋</button>
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
+        <div class="col-sm-7 text-right" >
+        </div>
     </div>
-    <div class="col-sm-7 text-right" >
-    </div>
-</div>
+<{/if}>
 
 <table class="table table-striped">
     <tr>

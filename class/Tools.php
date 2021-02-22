@@ -189,6 +189,7 @@ class Tools
             case 'view_ok':
             case 'download':
             case 'destroy':
+            case 'search_stu':
                 if ($_SESSION['club_adm'] or $_SESSION['officer']) {
                     return true;
                 }

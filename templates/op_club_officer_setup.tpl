@@ -99,6 +99,14 @@
                         <{/foreach}>
                     </select>
                     <div class="input-group-append input-group-addon">
+                        <div class="input-group-text">
+                                <label class="form-check-label">
+                                    <input class="form-check-input" type="checkbox" name="copy_students" value="1">
+                                    含學生資料
+                                </label>
+                        </div>
+                    </div>
+                    <div class="input-group-append input-group-addon">
                         <span class="input-group-text">到<{$club_year}>學年第<{$club_seme}>學期</span>
                     </div>
                 </div>
