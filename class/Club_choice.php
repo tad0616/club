@@ -229,9 +229,8 @@ class Club_choice
     public static function get_ok_num($year, $seme)
     {
         global $xoopsDB;
-        $sql = "select club_id,count(*) from `" . $xoopsDB->prefix("club_choice") . "`
-        where choice_result='正取'
-        group by club_id";
+        $sql = "select club_id, count(*) from `" . $xoopsDB->prefix("club_choice") . "`
+        where choice_result='正取' and club_id in(select club_id from `" . $xoopsDB->prefix("club_main") . "` where club_year='$year' and club_seme='$seme') group by club_id";
         $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
         while (list($club_id, $count) = $xoopsDB->fetchRow($result)) {
             $data_arr[$club_id] = (int) $count;
