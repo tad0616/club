@@ -68,6 +68,9 @@ class Tools
             $email = $xoopsUser->email();
             $name = $xoopsUser->name();
             $stu_grade = $xoopsUser->user_from();
+            if ($stu_grade >= 7) {
+                $stu_grade -= 6;
+            }
             $stu_class = $xoopsUser->user_sig();
             $school_year = self::get_club_year();
             if ($email) {
@@ -81,7 +84,7 @@ class Tools
                 $sql = "select a.`stu_id`,b.`stu_seat_no`, a.`stu_no` from `" . $xoopsDB->prefix("scs_students") . "` as a
                 join `" . $xoopsDB->prefix("scs_general") . "` as b on a.`stu_id` = b.`stu_id`
                 where a.`stu_name`='{$name}' and b.`stu_grade`='{$stu_grade}' and b.`stu_class`='{$stu_class}' and b.`school_year`='{$school_year}'";
-                // die($sql);
+
                 $result = $xoopsDB->query($sql) or Utility::web_error($sql, __FILE__, __LINE__);
                 $total = $xoopsDB->getRowsNum($result);
                 if ($total > 1) {

@@ -42,7 +42,7 @@ class Update
     {
         global $xoopsDB;
         $sql = 'ALTER TABLE ' . $xoopsDB->prefix('club_data_center') . " ADD `sort` mediumint(9) unsigned COMMENT '顯示順序' after `col_id`";
-        $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/tad_themes/admin/index.php', 30, $xoopsDB->error());
+        $xoopsDB->queryF($sql) or redirect_header(XOOPS_URL . '/modules/club/admin/index.php', 30, $xoopsDB->error());
     }
 
 }
