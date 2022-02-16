@@ -2,7 +2,6 @@
 namespace XoopsModules\Club;
 
 use XoopsModules\Club\Club_apply;
-use XoopsModules\Club\Club_choice;
 use XoopsModules\Club\Club_main;
 use XoopsModules\Club\Tools;
 use XoopsModules\Tadtools\SweetAlert;
@@ -31,7 +30,7 @@ class Club_choice
     //列出所有 club_choice 資料
     public static function index($year, $seme, $stu_id = '', $mode = '')
     {
-        global $xoopsDB, $xoopsTpl, $xoTheme, $xoopsModuleConfig;
+        global $xoopsTpl, $xoopsModuleConfig;
 
         // 可選填年級
         $stu_can_apply_grade = explode(';', $xoopsModuleConfig['stu_can_apply_grade']);
@@ -57,13 +56,13 @@ class Club_choice
         $xoopsTpl->assign('clubs', $clubs);
 
         $apply_id = $apply['apply_id'];
+
         if (empty($apply_id)) {
             if (!empty($_SESSION['stu_id'])) {
                 $apply_id = Club_apply::store($stu_id, $year, $seme);
             } else {
                 $apply_id = Club_apply::store($stu_id, $year, $seme, $stu['stu_name'], $stu['stu_grade'], $stu['stu_class'], $stu['stu_seat_no'], $stu['stu_no']);
             }
-
             $apply = Club_apply::get('', $stu_id, $year, $seme);
             $apply_id = $apply['apply_id'];
         }

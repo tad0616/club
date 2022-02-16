@@ -1,7 +1,6 @@
 <?php
 namespace XoopsModules\Club;
 
-use XoopsModules\Club\Club_apply;
 use XoopsModules\Club\Tools;
 use XoopsModules\Tadtools\FormValidator;
 use XoopsModules\Tadtools\SweetAlert;
@@ -153,9 +152,9 @@ class Club_apply
 
         $stu_name = !empty($stu_name) ? $stu_name : $myts->addSlashes($xoopsUser->name());
         $stu_grade = !empty($stu_grade) ? $stu_grade : (int) $xoopsUser->user_from();
-        if ($stu_grade >= 7) {
-            $stu_grade -= 6;
-        }
+        // if ($stu_grade >= 7) {
+        //     $stu_grade -= 6;
+        // }
         $stu_class = !empty($stu_class) ? $stu_class : (int) $xoopsUser->user_sig();
         $stu_seat_no = !empty($stu_seat_no) ? $stu_seat_no : (int) $_SESSION['stu_seat_no'];
         $stu_no = !empty($stu_no) ? $stu_no : (int) $_SESSION['stu_no'];

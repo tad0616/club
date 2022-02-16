@@ -96,5 +96,5 @@ $modversion['config'][$i] = [
     'description' => '_MI_CLUB_STU_CAN_APPLY_GRADE_DESC',
     'formtype' => 'textbox',
     'valuetype' => 'text',
-    'default' => '1;2',
+    'default' => '7;8',
 ];

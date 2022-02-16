@@ -2,7 +2,6 @@
 namespace XoopsModules\Club;
 
 use XoopsModules\Club\Club_choice;
-use XoopsModules\Club\Club_main;
 use XoopsModules\Club\Tools;
 use XoopsModules\Tadtools\CkEditor;
 use XoopsModules\Tadtools\DataList;
@@ -34,7 +33,7 @@ class Club_main
     //列出所有 club_main 資料
     public static function index($year, $seme)
     {
-        global $xoopsDB, $xoopsTpl, $xoopsModuleConfig;
+        global $xoopsTpl, $xoopsModuleConfig;
 
         // 找出各社團被當作第一志願的人數
         $choice1 = Club_choice::get_sort_count($year, $seme, '', 1);
@@ -375,6 +374,7 @@ class Club_main
             $club_id = $all['club_id'];
             $data_arr[$club_id] = $all;
         }
+
         return $data_arr;
     }
 

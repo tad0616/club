@@ -92,6 +92,30 @@
             </div>
             <div class="col-sm-6">
                 <div class="input-group">
+                    <select name="copy_from_ys" class="custom-select form-select">
+                        <option value="">不複製社團資料</option>
+                        <{foreach from=$club_ys_arr key=ys item=count}>
+                            <option value="<{$ys}>">複製 <{$ys}> 的社團資料（共<{$count}>個）</option>
+                        <{/foreach}>
+                    </select>
+
+                    <div class="input-group-prepend input-group-addon">
+                        <div class="input-group-text">
+                            <div class="form-check">
+                                <input class="form-check-input mt-2" type="checkbox" id="copy_students" name="copy_students" value="1">
+                                <label class="form-check-label" for="copy_students">
+                                含學生資料
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="input-group-prepend input-group-addon">
+                        <span class="input-group-text">到<{$club_year}>學年第<{$club_seme}>學期</span>
+                    </div>
+                </div>
+
+
+                <{* <div class="input-group">
                     <select name="copy_from_ys" class="form-control">
                         <option value="">不複製社團資料</option>
                         <{foreach from=$club_ys_arr key=ys item=count}>
@@ -100,16 +124,16 @@
                     </select>
                     <div class="input-group-append input-group-addon">
                         <div class="input-group-text">
-                                <label class="form-check-label">
-                                    <input class="form-check-input" type="checkbox" name="copy_students" value="1">
-                                    含學生資料
-                                </label>
+                            <label class="form-check-label">
+                                <input class="form-check-input" type="checkbox" name="copy_students" value="1">
+                                含學生資料
+                            </label>
                         </div>
                     </div>
                     <div class="input-group-append input-group-addon">
                         <span class="input-group-text">到<{$club_year}>學年第<{$club_seme}>學期</span>
                     </div>
-                </div>
+                </div> *}>
             </div>
         </div>
     <{/if}>

@@ -68,9 +68,9 @@ class Tools
             $email = $xoopsUser->email();
             $name = $xoopsUser->name();
             $stu_grade = $xoopsUser->user_from();
-            if ($stu_grade >= 7) {
-                $stu_grade -= 6;
-            }
+            // if ($stu_grade >= 7) {
+            //     $stu_grade -= 6;
+            // }
             $stu_class = $xoopsUser->user_sig();
             $school_year = self::get_club_year();
             if ($email) {
