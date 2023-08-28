@@ -45,6 +45,7 @@ class Club_choice
 
         $apply = Club_apply::get('', $stu_id, $year, $seme);
 
+        $all_clubs = Club_main::get_all($year, $seme, null, true);
         $clubs = Club_main::get_all($year, $seme, $stu['stu_grade'], true);
 
         // 社團數
@@ -89,14 +90,24 @@ class Club_choice
             //過濾讀出的變數值
             $all['apply_id'] = (int) $all['apply_id'];
             $all['club_id'] = $club_id = (int) $all['club_id'];
-            $all['choice_sort'] = (int) $all['choice_sort'];
-            $all['club_title'] = $myts->htmlSpecialChars($clubs[$club_id]['club_title']);
-            $all['choice_result'] = $myts->htmlSpecialChars($all['choice_result']);
-            $all['club_score'] = $myts->htmlSpecialChars($all['club_score']);
-            $all['score_date'] = $myts->htmlSpecialChars($all['score_date']);
+            if (isset($clubs[$club_id]['club_title'])) {
+                $all['choice_sort'] = (int) $all['choice_sort'];
+                $all['club_title'] = $myts->htmlSpecialChars($clubs[$club_id]['club_title']);
+                $all['choice_result'] = $myts->htmlSpecialChars($all['choice_result']);
+                $all['club_score'] = $myts->htmlSpecialChars($all['club_score']);
+                $all['score_date'] = $myts->htmlSpecialChars($all['score_date']);
+            } else {
+                $all['choice_sort'] = '錯誤';
+                $all['club_title'] = $myts->htmlSpecialChars($all_clubs[$club_id]['club_title']) . "（僅限" . implode('、', $all_clubs[$club_id]['club_grade']) . "年級報名）";
+                $all['choice_result'] = 'X';
+                $all['club_score'] = 'X';
+                $all['score_date'] = $myts->htmlSpecialChars($all['score_date']);
+
+            }
 
             $club_choice[$club_id] = $all;
         }
+        Utility::test($club_choice, 'club_choice', 'dd');
         $xoopsTpl->assign('club_choice', $club_choice);
 
         $choice1 = self::get_sort_count($year, $seme, $stu['stu_grade'], 1);

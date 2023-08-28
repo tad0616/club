@@ -134,7 +134,6 @@ switch ($op) {
     default:
         Tools::stu_edit_able();
         if ($_SESSION['stu_id']) {
-
             if (!empty($club_id)) {
                 Club_main::show($club_id);
                 $op = 'club_main_show';
@@ -143,7 +142,7 @@ switch ($op) {
                 $op = 'club_choice_index';
             }
         } else {
-            if (!empty($stu_id)) {
+            if (!empty($stu_id) && $xoopsUser) {
                 Club_choice::index($year, $seme, $stu_id, $mode);
                 $op = 'club_choice_index';
             } elseif (!empty($club_id)) {

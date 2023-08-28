@@ -53,7 +53,7 @@ class Tools
     public static function get_club_seme()
     {
         $m = date('n');
-        if ($m >= 8 or $m < 2) {
+        if ($m >= 6 and $m < 12) {
             $club_seme = 1;
         } else {
             $club_seme = 2;
